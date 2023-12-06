@@ -1,0 +1,25 @@
+const jwt = require('jsonwebtoken');
+const secretKey = process.env.SECRET_KEY;
+
+function authenticateToken(req, res, next) {
+  const token = req.header('Authorization');
+
+  if (!token) {
+    return res.status(401).json({ message: 'Access denied. Token is missing.' });
+  }
+
+  jwt.verify(token, secretKey, { algorithms: ['HS256'] }, (err, user) => {
+    if (err) {
+      if (err.name === 'TokenExpiredError') {
+        return res.status(401).json({ message: 'Token has expired.' });
+      } else {
+        return res.status(401).json({ message: 'Invalid token.' });
+      }
+    }
+
+    req.user = user; // تعيين البيانات المستخرجة من التوكن في كائن الطلب
+    next();
+  });
+}
+
+module.exports = authenticateToken;

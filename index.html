@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe Checkout Test</title>
+</head>
+<body>
+  <button id="checkout-button">Checkout</button>
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    const stripe = Stripe('YOUR_STRIPE_PUBLIC_KEY');
+    const checkoutButton = document.getElementById('checkout-button');
+
+    checkoutButton.addEventListener('click', async () => {
+      const response = await fetch('/create-payment-intent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ amount: 1000, currency: 'usd' }),
+      });
+      const { clientSecret } = await response.json();
+
+      // إعداد الدفع
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: {
+            // أضف هنا معلومات بطاقة الاختبار
+            // مثل number: '4242424242424242', exp_month: 12, exp_year: 2024, cvc: '123'
+          },
+        },
+      });
+
+      if (result.error) {
+        // يمكنك إظهار رسالة خطأ للمستخدم هنا
+        console.error(result.error.message);
+      } else {
+        // نجاح الدفع، يمكنك أدراج رمز للتتبع أو إظهار رسالة نجاح
+        console.log('Payment succeeded:', result.paymentIntent);
+      }
+    });
+  </script>
+</body>
+</html>
