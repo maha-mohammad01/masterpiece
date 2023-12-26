@@ -62,7 +62,7 @@ function Shosepro({ onAddToCart, onAddToWishlist }) {
         </div>
 
       {error && <div>Error: {error}</div>}
-      <section className="flex items-center py-20 bg-white lg:h-screen dark:bg-gray-800">
+      <section className="flex items-center py-20 bg-gray-70 lg:h-[60vh] dark:bg-gray-800 mt-16">
         <div className="px-4 mx-auto max-w-7xl mb-16">
           <div className="grid grid-cols-1 gap-4 lg:gap-6 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product, index) => (

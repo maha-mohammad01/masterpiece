@@ -1,298 +1,6 @@
-// const express = require('express');
-// const jwt = require('jsonwebtoken');
-// const bodyParser = require('body-parser');
-// const bcrypt = require('bcrypt');
-// const { Pool } = require('pg');
-// const nodemailer = require('nodemailer');
-// const multer = require('multer');
-// const app = express();
-// const secretKey = 'your_secret_key';
-// const stripe = require('stripe')('sk_test_51OFEgrGROfSjwnSRPJAx7TNHX9OLkJDGMAZGz9erdBAKxhhpASVfzwdrOWtgjXASyPEAsO5n8WPVhoMNMZKDnQpI00VTEQPxcd');
-// const cors = require('cors');
-// const path = require("path");
-// const { format } = require('date-fns');
-// app.use(cors());
-// const stripeApiEndpoint = 'https://api.stripe.com/v1/payment_intents';
-// const axios = require('axios');
-
-// // const storage = multer.diskStorage({
-// //   destination: function (req, file, cb) {
-// //     cb(null,'images'); 
-// //   },
-// //   filename: function (req, file, cb) {
-// //     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-// //     cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-// //   },
-// // });
-// // const upload = multer({ storage: storage });
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//       cb(null, 'C:/Users/Orange/Desktop/masterpiece/masterpiece/images'); // قم بتحديد المسار الكامل هنا
-//     },
-//     filename: function (req, file, cb) {
-//       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-//       cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-//     },
-//   });
-  
-//   const upload = multer({ storage: storage });
-  
-// app.use(bodyParser.json());
-// const passport = require('passport');
-// const GoogleStrategy = require('passport-google-oauth20').Strategy;
-// conststripe=require("stripe")(process.env.Secretkey);
-// const pool = new Pool({
-//   user: 'postgres',
-//   password: '123',
-//   host: 'localhost',
-//   port: 5432,
-//   database: 'football',
-// });
-
-
-  
-  
-// // حذف الملعب
-// app.delete('/delete-stadium/:stadium_id', authenticateAdminToken, async (req, res) => {
-//   const { stadium_id } = req.params;
-
-//   try {
-//     const stadiumData = await pool.query('SELECT * FROM stadiums WHERE stadium_id = $1', [stadium_id]);
-
-//     if (stadiumData.rows.length === 0) {
-//       return res.status(404).json({ message: 'Stadium not found' });
-//     }
-
-//     const updateOwnerResult = await pool.query('UPDATE users SET user_role = $1 WHERE user_id = $2 RETURNING *', [3, stadiumData.rows[0].owner_id]);
-
-//     if (updateOwnerResult.rows.length === 0) {
-//       return res.status(500).json({ message: 'Error updating owner role' });
-//     }
-
-//     // قم بتحديث deleted ليكون true
-//     const updateResult = await pool.query('UPDATE stadiums SET deleted = true WHERE stadium_id = $1 RETURNING *', [stadium_id]);
-
-//     if (updateResult.rows.length === 0) {
-//       return res.status(404).json({ message: 'Stadium not found' });
-//     }
-
-//     res.json({ message: 'Stadium deleted successfully', stadium: updateResult.rows[0] });
-//   } catch (error) {
-//     console.error('Error executing query', error);
-//     res.status(500).json({ message: 'Internal server error' });
-//   }
-// });
-
-// /////////////////////////// add comment & rete ////////////////////////////////////////////////////////////
-// // الطلب للحصول على متوسط التقييم وتحديثه في جدول الاستعراضات
-// app.post('/add-review', authenticateToken, async (req, res) => {
-//   const { stadium_id, rating, comment } = req.body;
-//   const { user_id } = req.user;
-
-//   try {
-//     // التحقق من وجود تقييم سابق للمستخدم على هذا الملعب
-//     const existingReviewResult = await pool.query(
-//       'SELECT * FROM stadium_reviews WHERE stadium_id = $1 AND user_id = $2',
-//       [stadium_id, user_id]
-//     );
-
-//     if (rating >= 1 && rating <= 5) {
-//       if (existingReviewResult.rows.length === 0) {
-//         // إذا لم يكن هناك تقييم سابق، أقم بإضافة تقييم جديد
-//         const result = await pool.query(
-//           'INSERT INTO stadium_reviews (stadium_id, user_id, rating, comment) VALUES ($1, $2, $3, $4) RETURNING *',
-//           [stadium_id, user_id, rating, comment]
-//         );
-
-//         // حساب متوسط التقييم وتحديثه في جدول الاستعراضات
-//         await updateAverageRating(stadium_id);
-
-//         res.json({ message: 'Review added successfully', review: result.rows[0] });
-//       } else {
-//         // إذا كان هناك تقييم سابق، قم بتحديثه
-//         const result = await pool.query(
-//           'UPDATE stadium_reviews SET rating = $1, comment = $2 WHERE stadium_id = $3 AND user_id = $4 RETURNING *',
-//           [rating, comment, stadium_id, user_id]
-//         );
-
-//         // حساب متوسط التقييم وتحديثه في جدول الاستعراضات
-//         await updateAverageRating(stadium_id);
-
-//         res.json({ message: 'Review updated successfully', review: result.rows[0] });
-//       }
-//     } else {
-//       res.status(400).json({ message: 'Invalid rating. Rating must be between 1 and 5.' });
-//     }
-//   } catch (error) {
-//     console.error('Error executing query', error);
-//     res.status(500).json({ message: 'Internal server error' });
-//   }
-// });
-
-// // الدالة لحساب متوسط التقييم وتحديثه في جدول الاستعراضات
-// async function updateAverageRating(stadiumId) {
-//   try {
-//     const result = await pool.query(
-//       'UPDATE stadium_reviews SET average_rating = (SELECT AVG(rating) FROM stadium_reviews WHERE stadium_id = $1) WHERE stadium_id = $1',
-//       [stadiumId]
-//     );
-//   } catch (error) {
-//     console.error('Error updating average rating', error);
-//   }
-// }
-
-// // الطلب للحصول على متوسط التقييم
-// app.get('/average-rating/:stadium_id', async (req, res) => {
-//   const stadiumId = req.params.stadium_id;
-
-//   try {
-//     const result = await pool.query(
-//       'SELECT average_rating FROM stadium_reviews WHERE stadium_id = $1',
-//       [stadiumId]
-//     );
-
-//     const averageRating = result.rows[0].average_rating || 0;
-
-//     res.json({ averageRating });
-//   } catch (error) {
-//     console.error('Error executing query', error);
-//     res.status(500).json({ message: 'Internal server error' });
-//   }
-// });
-
- 
-// /////////////////////////////////////////////////////////////////////////////
-// app.post('/upload-stadium-image', authenticateToken, upload.single('image'), async (req, res) => {
-//   try {
-//     if (!req.file) {
-//       return res.status(400).json({ message: 'لم يتم تحميل ملف.' });
-//     }
-//     console.log(req.file.filename);
-
-//     const imageData = req.file.filename; 
-//     const stadiumResult = await pool.query('SELECT * FROM stadiums WHERE owner_id = $1', [req.user.user_id]);
-
-//     if (stadiumResult.rows.length === 0) {
-//       return res.status(403).json({ message: 'غير مصرح لك بتحديث هذا الملعب.' });
-//     }
-
-//     const updateResult = await pool.query('UPDATE stadiums SET images_url = $1 WHERE owner_id = $2 RETURNING *', [imageData, req.user.user_id]);
-
-//     if (updateResult.rows.length === 0) {
-//       return res.status(500).json({ message: 'فشل في تحديث الصورة.' });
-//     }
-
-//     res.json({ message: 'تمت إضافة صورة الملعب بنجاح', stadium: updateResult.rows[0] });
-//   } catch (error) {
-//     console.error('حدث خطأ أثناء تنفيذ الاستعلام', error);
-//     res.status(500).json({ message: 'خطأ في الخادم الداخلي' });
-//   }
-// });
-
-// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// app.use(bodyParser.json());
-
-// app.post('/process-payment', authenticateToken, async (req, res) => {
-//   try {
-//     const { user_id, email, name } = req.user;
-
-//     const customer = await stripe.customers.create({
-//       email,
-//       name,
-//     });
-//     const paymentIntent = await stripe.paymentIntents.create({
-//       amount: req.body.amount,
-//       currency: req.body.currency || "USD",
-//       customer: customer.id,
-//     });
-
-//     const updateStatusQuery = 'UPDATE stadiums SET approval_status = $1 WHERE owner_id = $2 RETURNING approval_status';
-//     const updatedStatus = await pool.query(updateStatusQuery, ['approved', user_id]);
-//     const updateUserRoleQuery = 'UPDATE users SET user_role = $1 WHERE user_id = $2 RETURNING user_role';
-//     const updatedUserRole = await pool.query(updateUserRoleQuery, [2, user_id]);
-//     const updateBookingQuery = 'UPDATE bookings SET status = $1, payment_method = $2 WHERE booking_id = $3 RETURNING *';
-//     const updatedBooking = await pool.query(updateBookingQuery, ['approved', 'stripe', req.body.booking_id]);
-
-//     const insertPaymentQuery = `
-//       INSERT INTO payments (user_id, stadium_id, booking_id, payment_amount, payment_date)
-//       VALUES ($1, $2, $3, $4, $5)
-//       RETURNING *`;
-
-//     const paymentResult = await pool.query(insertPaymentQuery, [
-//       user_id,
-//       req.body.stadium_id,
-//       req.body.booking_id,
-//       req.body.amount,
-//       new Date()
-//     ]);
-//     res.status(200).json({
-//       success: true,
-      
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'حدث خطأ أثناء معالجة الدفع' });
-//   }
-// });
-
-
-
-// app.listen(2000, () => {
-//   console.log('Server running at http://localhost:2000');
-// });
-
-
-// const express = require('express');
-// const jwt = require('jsonwebtoken');
-// const bodyParser = require('body-parser');
-// const bcrypt = require('bcrypt');
-// const { Pool } = require('pg');
-// const nodemailer = require('nodemailer');
-// const multer = require('multer');
-// const app = express();
-// const secretKey = 'your_secret_key';
-// const cors = require('cors');
-// const path = require("path");
-// const { format } = require('date-fns');
-// app.use(cors());
-// const stripeApiEndpoint = 'https://api.stripe.com/v1/payment_intents';
-// const axios = require('axios');
-// const storageRef = ref(storage, 'stadium-images');
-// const { getStorage, ref, uploadBytes, getDownloadURL } = require('firebase/storage');
-
-// // Use require for Firebase initialization
-// const { initializeApp } = require("firebase/app");
-// const { getStorage, ref, uploadBytes, getDownloadURL } = require('firebase/storage');
-
-// // Your web app's Firebase configuration
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCeNNeNQ4Ec7rezMUKd_PyiOX7pESvh8tA",
-//   authDomain: "football-626b1.firebaseapp.com",
-//   projectId: "football-626b1",
-//   storageBucket: "football-626b1.appspot.com",
-//   messagingSenderId: "1019343220790",
-//   appId: "1:1019343220790:web:0fe1482e424a9b5df0a897"
-// };
-
-// // Initialize Firebase
-// const firebaseApp = initializeApp(firebaseConfig);
-// const storage = getStorage(firebaseApp);
-
-// const diskStorage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, 'C:/Users/Orange/Desktop/masterpiece/masterpiece/images');
-//     },
-//     filename: function (req, file, cb) {
-//         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-//         cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-//     },
-// });
-
-
-
-
 const express = require('express');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const { Pool } = require('pg');
@@ -307,12 +15,20 @@ const axios = require('axios');
 const admin = require("firebase-admin");
 const imagesArray = ["url1", "url2", "url3"];
 const imagesString = JSON.stringify(imagesArray);
+require('dotenv').config();
 app.use(express.json());
 
 
+const userRoutes = require('./routes/userRoutes');
+const contactsRoutes = require('./routes/contactsRoutes');
+const stadiumRoutes = require('./routes/stadiumRoutes'); 
+const adminRoutes = require('./routes/adminRoutes'); 
+const productsRoute = require('./routes/productsRoute');
+
+const stripe = require('stripe')('sk_test_51OFEgrGROfSjwnSRPJAx7TNHX9OLkJDGMAZGz9erdBAKxhhpASVfzwdrOWtgjXASyPEAsO5n8WPVhoMNMZKDnQpI00VTEQPxcd');
+const stripeApiEndpoint = 'https://api.stripe.com/v1/payment_intents'; 
 
 const retrievedArray = JSON.parse(imagesString);
-
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use(cors());
@@ -352,139 +68,19 @@ const pool = new Pool({
   database: 'football',
 });
 
-///////////////////////////////////////////// USERS ///////////////////////////////////////////////////////////
-app.post('/login', async (req, res) => {
-  const { email, password } = req.body;
 
-  try {
-    const result = await pool.query('SELECT * FROM users WHERE email = $1 AND is_deleted = false', [email]);
+// Middleware
+app.use(cors()); 
+app.use(bodyParser.json());
 
-    if (result.rows.length === 0) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-    const user = result.rows[0];
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-    const token = jwt.sign({ user_id: user.user_id, email: user.email, user_role: user.user_role }, secretKey, { expiresIn: '10d' });
-    res.json({ token });
-  } catch (error) {
-    console.error('Error executing query', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-app.post('/register', async (req, res) => {
-  const { full_name, email, password, phone } = req.body;
-  const user_role = 3;
-
-  try {
-    const emailExists = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    if (emailExists.rows.length > 0) {
-      return res.status(400).json({ message: 'Email already exists' });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const result = await pool.query('INSERT INTO users (full_name, email, password, phone, user_role, is_deleted) VALUES ($1, $2, $3, $4, $5, false) RETURNING *', [full_name, email, hashedPassword, phone, user_role]);
-
-    res.json({ message: 'User registered successfully' });
-  } catch (error) {
-    console.error('Error executing query', error);
-
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-app.get('/user-profile', authenticateToken, async (req, res) => {
-  const { user_id } = req.user;
-
-  try {
-    const userResult = await pool.query('SELECT * FROM users WHERE user_id = $1 AND is_deleted = false', [user_id]);
-
-    if (userResult.rows.length === 0) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    const user = userResult.rows[0];
-
-    let imageBuffer;
-    if (user.pic_user) {
-      const imageRef = ref(storage, user.pic_user);
-      const imageDownloadURL = await getDownloadURL(imageRef);
-      const imageResponse = await axios.get(imageDownloadURL, { responseType: 'arraybuffer' });
-      imageBuffer = Buffer.from(imageResponse.data, 'binary');
-    }
-
-    const response = {
-      message: 'User profile retrieved successfully',
-      user: {
-        ...user,
-        pic_user: imageBuffer ? `data:image/jpeg;base64,${imageBuffer.toString('base64')}` : null,
-      },
-    };
-
-    res.json(response);
-  } catch (error) {
-    console.error('Error executing query', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
+// Routes
+app.use('/', userRoutes);
+app.use('/', contactsRoutes);
+app.use('/', adminRoutes); 
+app.use('/', productsRoute);
 
 
-app.post('/upload-upic', authenticateToken, upload.single('image'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ message: 'لم يتم تحميل ملف.' });
-    }
-
-    const fileBuffer = req.file.buffer;
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const fileExtension = 'jpeg';
-
-    const fileName = `image-${uniqueSuffix}.${fileExtension}`;
-    const storageRef = ref(storage, fileName);
-    await uploadBytes(storageRef, fileBuffer);
-
-    // Save the image reference in the database
-    const imageUrl = await getDownloadURL(storageRef);
-    const { user_id } = req.user;
-
-    // Update the 'pic_user' column in the 'users' table
-    const updateResult = await pool.query('UPDATE users SET pic_user = $1 WHERE user_id = $2 RETURNING *', [imageUrl, user_id]);
-
-    if (updateResult.rows.length === 0) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Send the image URL in the response
-    res.json({ message: 'Image uploaded and database updated successfully', imageUrl });
-  } catch (error) {
-    console.error(' Error executing query', error);
-    res.status(500).json({ message: 'خطInternal server error', error: error.message });
-  }
-});
-
-//deactive user 
-app.delete('/delete-user', authenticateToken, async (req, res) => {
-  const { user_id } = req.user;
-
-  try {
-    const result = await pool.query('UPDATE users SET is_deleted = true WHERE user_id = $1 RETURNING *', [user_id]);
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    res.json({ message: 'User deleted successfully' });
-  } catch (error) {
-    console.error('Error executing query', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-// Middleware للتحقق من التوكن
+// // Middleware للتحقق من التوكن
 function authenticateToken(req, res, next) {
   const token = req.header('Authorization') && req.header('Authorization').replace('Bearer ', '');
 // console.log(token);
@@ -507,184 +103,6 @@ function authenticateToken(req, res, next) {
 }
 
 
-
-// تحديث بيانات المستخدم
-app.put('/update-user', authenticateToken, async (req, res) => {
-  const { full_name, email, phone } = req.body;
-  const { user_id } = req.user; 
-
-  try {
-    const userExists = await pool.query('SELECT * FROM users WHERE user_id = $1 AND is_deleted = false', [user_id]);
-
-    if (userExists.rows.length === 0) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    
-
-    const result = await pool.query('UPDATE users SET full_name = $1, email = $2, phone = $3 WHERE user_id = $4 RETURNING *', [full_name, email, phone, user_id]);
-
-    res.json({ message: 'User updated successfully', user: result.rows[0] });
-  } catch (error) {
-    console.error('Error executing query', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-// Logout
-app.post('/logout', (req, res) => {
-  res.clearCookie('token');
-  res.json({ message: 'Logout successful' });
-});
-/////////////////////////////////////////// ADMIN////////////////////////////////////////////////////////
-// تسجيل مستخدم جديد للأدمن
-app.post('/register-admin', async (req, res) => {
-    const { full_name, email, password, phone } = req.body;
-  
-    try {
-      // التحقق مما إذا كان البريد الإلكتروني مسجل من قبل
-      const emailExists = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-  
-      if (emailExists.rows.length > 0) {
-        return res.status(400).json({ message: 'Email already exists' });
-      }
-  
-      const hashedPassword = await bcrypt.hash(password, 10);
-  
-      const result = await pool.query('INSERT INTO users (full_name, email, password, phone, user_role, is_deleted) VALUES ($1, $2, $3, $4, $5, false) RETURNING *', [full_name, email, hashedPassword, phone, 1]);
-  
-      res.json({ message: 'Admin registered successfully', admin: result.rows[0] });
-    } catch (error) {
-      console.error('Error executing query', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  });
-
-
-  // تسجيل دخول الأدمن
-  app.post('/admin-login', async (req, res) => {
-    const { email, password } = req.body;
-  
-    try {
-      const result = await pool.query('SELECT * FROM users WHERE email = $1 AND user_role = $2', [email, 1]);
-  
-      if (result.rows.length === 0) {
-        return res.status(401).json({ message: 'Invalid credentials' });
-      }
-  
-      const admin = result.rows[0];
-  
-      const isPasswordValid = await bcrypt.compare(password, admin.password);
-  
-      if (!isPasswordValid) {
-        return res.status(401).json({ message: 'Invalid credentials' });
-      }
-  
-      const token = jwt.sign({ userId: admin.user_id, email: admin.email, user_role: admin.user_role }, secretKey, { expiresIn: '10d' });
-  
-      res.json({ message: 'Admin logged in successfully', token: token });
-    } catch (error) {
-      console.error('Error executing query', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  });
-  
-  // عرض طلبات الملعب
-  app.get('/stadium-requests', authenticateAdminToken, async (req, res) => {
-    try {
-    const result = await pool.query('SELECT * FROM stadiums WHERE approval_status = $1', ['pending']);
-    // const result = await pool.query('SELECT * FROM stadiums');
-
-      res.json({ message: 'Stadium requests retrieved successfully', requests: result.rows });
-    } catch (error) {
-      console.error('Error executing query', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  });
-  
-// الموافقة على طلب ملعب
-app.put('/approve-stadium/:stadium_id', authenticateAdminToken, async (req, res) => {
-  const { stadium_id } = req.params;
-
-  try {
-      const result = await pool.query('UPDATE stadiums SET approval_status = $1, deleted = $2 WHERE stadium_id = $3 RETURNING *', ['approved', false, stadium_id]);
-
-      if (result.rows.length === 0) {
-          return res.status(404).json({ message: 'Stadium not found' });
-      }
-
-      // تحديث رقم الرول للمستخدم إلى 2 (owner)
-      const updateUserResult = await pool.query('UPDATE users SET user_role = $1 WHERE user_id = $2 RETURNING *', [2, result.rows[0].owner_id]);
-
-      if (updateUserResult.rows.length === 0) {
-          return res.status(500).json({ message: 'Error updating user role' });
-      }
-
-      res.json({ message: 'Stadium request approved successfully', stadium: result.rows[0] });
-  } catch (error) {
-      console.error('Error executing query', error);
-      res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-// رفض طلب ملعب
-app.put('/reject-stadium/:stadium_id', authenticateAdminToken, async (req, res) => {
-  const { stadium_id } = req.params;
-
-  try {
-      const result = await pool.query('UPDATE stadiums SET approval_status = $1, deleted = $2 WHERE stadium_id = $3 RETURNING *', ['rejected', true, stadium_id]);
-
-      if (result.rows.length === 0) {
-          return res.status(404).json({ message: 'Stadium not found' });
-      }
-
-      // يمكنك إضافة أي إجراءات إضافية هنا إذا كنت بحاجة إلى تحديث المستخدم أو أي شيء آخر
-
-      res.json({ message: 'Stadium request rejected successfully', stadium: result.rows[0] });
-  } catch (error) {
-      console.error('Error executing query', error);
-      res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-  
-  // حذف الملعب
-app.delete('/delete-stadium/:stadium_id', authenticateAdminToken, async (req, res) => {
-  const { stadium_id } = req.params;
-
-  try {
-    const result = await pool.query('DELETE FROM stadiums WHERE stadium_id = $1 RETURNING *', [stadium_id]);
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'Stadium not found' });
-    }
-
-    res.json({ message: 'Stadium deleted successfully', stadium: result.rows[0] });
-  } catch (error) {
-    console.error('Error executing query', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-  
-  // حذف صاحب الملعب
-  app.delete('/delete-stadium-owner/:user_id', authenticateAdminToken, async (req, res) => {
-    const { user_id } = req.params;
-  
-    try {
-      const result = await pool.query('DELETE FROM users WHERE user_id = $1 RETURNING *', [user_id]);
-  
-      if (result.rows.length === 0) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-  
-      res.json({ message: 'User deleted successfully', user: result.rows[0] });
-    } catch (error) {
-      console.error('Error executing query', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  });
-  
-  
 function authenticateAdminToken(req, res, next) {
     const token = req.header('Authorization');
     
@@ -706,234 +124,92 @@ function authenticateAdminToken(req, res, next) {
     }
   }
   
-  app.post('/add-product', authenticateAdminToken, upload.array('images', 5), async (req, res) => {
-    const {
-      type, name, description, size, price, categories, color, quantity,
-    } = req.body;
-  
-    try {
-      const images = [];
-  
-      // Upload each image to Firebase Storage
-      for (const file of req.files) {
-        const fileBuffer = file.buffer;
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const fileName = `product-image-${uniqueSuffix}.jpeg`;
-  
-        const storageRef = ref(storage, 'product-images/' + fileName);
-  
-        // Upload the file to Firebase Storage
-        const snapshot = await uploadBytes(storageRef, fileBuffer);
-  
-        // Get the download URL for the uploaded file
-        const downloadURL = await getDownloadURL(snapshot.ref);
-  
-        // Add the download URL to the images array
-        images.push(downloadURL);
-      }
-  
-      // Insert the new product into the products table with image URLs
-      const result = await pool.query(
-        `INSERT INTO products (type, name, description, size, price, categories, color, quantity, images, created_at, deleted)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, current_timestamp, false) RETURNING *`,
-        [type, name, description, size, price, categories, color, quantity, images]
-      );
-  
-      // Check if the product was successfully added
-      if (result.rows.length === 0) {
-        return res.status(500).json({ message: 'Error adding product to the store' });
-      }
-  
-      const purchasedQuantity = parseInt(quantity, 10);
-      const productId = result.rows[0].id_product;
-  
-      await pool.query(
-        'UPDATE products SET quantity = quantity - $1 WHERE id_product = $2',
-        [purchasedQuantity, productId]
-      );
-  
-      res.json({ message: 'Product added successfully', product: result.rows[0] });
-    } catch (error) {
-      console.error('Error executing query', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  });
-  
-
-
-  app.get('/all-stadiums',authenticateAdminToken, async (req, res) => {
-    try {
-      const { page = 1, pageSize = 20 } = req.query;
-      const offset = (page - 1) * pageSize;
-  
-      const allStadiumsResult = await pool.query(
-        'SELECT * FROM stadiums WHERE deleted = false LIMIT $1 OFFSET $2',
-        [pageSize, offset]
-      );
-  
-      res.json({ message: 'All stadiums retrieved successfully', stadiums: allStadiumsResult.rows });
-    } catch (error) {
-      console.error('Error executing query', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  });
-  
-  app.post('/search', authenticateAdminToken, async (req, res) => {
-    const { searchQuery } = req.body;
-  
-    try {
-        const result = await performSearch(searchQuery);
-  
-        res.json({ message: 'Search results retrieved successfully', searchResults: result });
-    } catch (error) {
-        console.error('Error executing search query', error);
-        res.status(500).json({ message: 'Internal server error during search' });
-    }
-  });
-  
-  async function performSearch(searchQuery) {
-    // Use a regular expression to check if the search query is a numeric value
-    const isNumeric = /^\d+$/.test(searchQuery);
-  
-    // Construct the SQL query dynamically based on whether the search query is numeric
-    let usersQuery;
-    if (isNumeric) {
-        usersQuery = `
-            SELECT *
-            FROM users
-            WHERE
-                CAST(user_id AS TEXT) ILIKE $1 OR
-                CAST(phone AS TEXT) ILIKE $1
-        `;
-    } else {
-        usersQuery = 'SELECT * FROM users WHERE full_name ILIKE $1';
-    }
-  
-    const usersResult = await pool.query(usersQuery, [`%${searchQuery}%`]);
-  
-    const stadiumsResult = await pool.query('SELECT * FROM stadiums WHERE name ILIKE $1', [`%${searchQuery}%`]);
-  
-    const bookingsResult = await pool.query(`
-        SELECT
-            b.booking_id,
-            u.full_name,
-            b.phone,
-            b.start_time,
-            b.end_time,
-            b.note,
-            b.status,
-            EXTRACT(HOUR FROM (b.end_time - b.start_time)) AS total_hours
-        FROM
-            public.bookings b
-        JOIN
-            public.users u ON b.user_id = u.user_id
-        WHERE
-            u.full_name ILIKE $1 OR
-            CAST(b.phone AS TEXT) ILIKE $1
-    `, [`%${searchQuery}%`]);
-  
-    return {
-        users: usersResult.rows,
-        stadiums: stadiumsResult.rows,
-        bookings: bookingsResult.rows,
-    };
-  }
-
-  // //لاشخاص المحذوفين //
  
-app.get('/Deleteduser', authenticateAdminToken, async (req, res) => {
+
+// app.post('/add-product', authenticateAdminToken, upload.array('images', 5), async (req, res) => {
+//   const { type, name, description, price, categories, color, quantity,
+//       size_38, size_39, size_40, size_small, size_medium, size_large,
+//   } = req.body;
+
+//   try {
+//       let images = [];
+
+//       if (req.files && req.files.length > 0) {
+//           const storageRef = ref(storage, 'product-images');
+
+//           // رفع كل صورة إلى Firebase Storage
+//           for (const file of req.files) {
+//               try {
+//                   const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+//                   const fileExtension = path.extname(file.originalname);
+//                   const fileName = `images-${uniqueSuffix}${fileExtension}`;
+//                   const fileRef = ref(storageRef, fileName);
+//                   await uploadBytes(fileRef, file.buffer);
+
+//                   const downloadURL = await getDownloadURL(fileRef);
+//                   images.push(downloadURL);
+//               } catch (error) {
+//                   console.error('Error uploading image to Firebase Storage:', error);
+//                   return res.status(500).json({ message: 'Error uploading image to Firebase Storage' });
+//               }
+//           }
+//       }
+
+//       const result = await pool.query(
+//           `INSERT INTO products (type, name, description, price, categories, color, quantity, images, created_at, deleted, 
+//           size_38, size_39, size_40, size_small, size_medium, size_large)
+//           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, current_timestamp, false, $9, $10, $11, $12, $13, $14) RETURNING *`,
+//           [
+//               type, name, description, price, categories, color, quantity,
+//               images, // استخدم النص المنسق مباشرة
+//               size_38 === 'true', size_39 === 'true', size_40 === 'true',
+//               size_small === 'true', size_medium === 'true', size_large === 'true'
+//           ]
+//       );
+
+//       // تحديث الكمية في حال نجاح إدراج المنتج
+//       if (result.rows.length > 0) {
+//           const productId = result.rows[0].id_product;
+//           await pool.query(
+//               'UPDATE products SET quantity = $1 WHERE id_product = $2',
+//               [quantity, productId]
+//           );
+//           res.json({ message: 'Product added successfully', product: result.rows[0] });
+//       } else {
+//           return res.status(500).json({ message: 'Error adding product to the store' });
+//       }
+//   } catch (error) {
+//       console.error('Error executing query', error);
+//       res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
+
+
+// قم بإضافة هذه القطعة من الكود إلى ملف الخادم الخاص بك
+
+app.get('/products/:type?', async (req, res) => {
   try {
-    const result = await pool.query('SELECT user_id, full_name FROM users WHERE is_deleted = true');
+      let result;
 
-    res.json({users: result.rows });
-  } catch (error) {
-    console.error('Error executing query', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
+      if (req.params.type) {
+          const productType = req.params.type;
+          result = await pool.query(
+              'SELECT * FROM products WHERE type = $1 AND deleted = false',
+              [productType]
+          );
+      } else {
+          result = await pool.query(
+              'SELECT * FROM products WHERE deleted = false'
+          );
+      }
 
-app.get('/user-count', authenticateAdminToken, async (req, res) => {
-  try {
-    const result = await pool.query('SELECT COUNT(*) FROM users WHERE is_deleted = false');
-
-    res.json({ message: 'User count retrieved successfully', userCount: result.rows[0].count });
-  } catch (error) {
-    console.error('Error executing query', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-
-
-app.get('/allusers', authenticateAdminToken, async (req, res) => {
-  try {
-    const { page = 1, pageSize = 20 } = req.query;
-    const offset = (page - 1) * pageSize;
-    const result = await pool.query('SELECT user_id, full_name, email ,user_role FROM users WHERE is_deleted = false');
-
-    res.json({ message: 'Users with "false" status retrieved successfully', users: result.rows });
-  } catch (error) {
-    console.error('Error executing query', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-
-
-
-app.get('/stadium-count/:status', authenticateAdminToken, async (req, res) => {
-  const { status } = req.params;
-
-  try {
-    let query;
-    switch (status) {
-      case 'approved':
-      case 'pending':
-      case 'rejected':
-        query = `SELECT COUNT(*) FROM stadiums WHERE approval_status = $1`;
-        break;
-      default:
-        return res.status(400).json({ message: 'Invalid status parameter' });
-    }
-
-    const result = await pool.query(query, [status]);
-
-    res.json({ message: 'Stadium count retrieved successfully', stadiumCount: result.rows[0].count });
-  } catch (error) {
-    console.error('Error executing query', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-
-
-// عرض معلومات الحجوزات للمشرفين فقط
-app.get('/bookings-info', authenticateAdminToken, async (req, res) => {
-  try {
-    const { page = 1, pageSize = 20 } = req.query;
-    const offset = (page - 1) * pageSize;
-      const result = await pool.query(`
-          SELECT
-              b.booking_id,
-              u.full_name,
-              b.phone,
-              b.start_time,
-              b.end_time,
-              b.note,
-              b.status,
-              EXTRACT(HOUR FROM (b.end_time - b.start_time)) AS total_hours
-          FROM
-              public.bookings b
-          JOIN
-              public.users u ON b.user_id = u.user_id;
-      `);
-
-      res.json({ message: 'Booking information retrieved successfully', bookings: result.rows });
+      res.json(result.rows);
   } catch (error) {
       console.error('Error executing query', error);
       res.status(500).json({ message: 'Internal server error' });
   }
 });
+
 
 
 ///////////////////////////super user //////////////////////////////////////////////////////////////////////
@@ -1410,84 +686,6 @@ app.post('/add-review', authenticateToken, async (req, res) => {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-app.post('/contact', async (req, res) => {
-  const { full_name, email, message } = req.body;
-
-  try {
-    const mailOptions = {
-        from: `"${full_name}" <hma91109@gmail.com>`,
-        to: email,
-      subject: `replay 
-      `,
-      text: `thankyou`
-    };
-    const result = await pool.query('INSERT INTO public.contacts (full_name, email, message) VALUES ($1, $2, $3) RETURNING *', [full_name, email, message]);
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.error('Error sending email', error);
-        res.status(500).json({ message: 'Failed to send email' });
-      } else {
-        console.log('Email sent: ' + info.response);
-        res.json({ message: 'Email sent successfully' });
-      }
-    });
-  } catch (error) {
-    console.error('Error processing contact form', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-// تحديث نقطة النهاية لجلب رسائل الاتصال للأدمن
-app.get('/admin-contact', authenticateAdminToken, async (req, res) => {
-    try {
-      const messagesResult = await pool.query('SELECT * FROM public.contacts'); // قم بتحديث هذا الجزء
-      res.json({ messages: messagesResult.rows });
-    } catch (error) {
-      console.error('Error fetching contact messages', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  });
-  
-
-
-
-
-// Endpoint to handle contact form submissions
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'hma91109@gmail.com',
-    pass: 'kjnhebktzoqaqhgs'
-  }
-});
-
-// نقطة نهاية لمعالجة نموذج الاتصال
-app.post('/contact', async (req, res) => {
-  const { name, email, message } = req.body;
-
-  try {
-    const mailOptions = {
-      from: "",
-      to: email,
-      subject: `replay`,
-      text: `thankyou`
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.error('Error sending email', error);
-        res.status(500).json({ message: 'Failed to send email' });
-      } else {
-        console.log('Email sent: ' + info.response);
-        res.json({ message: 'Email sent successfully' });
-      }
-    });
-  } catch (error) {
-    console.error('Error processing contact form', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
 
 
 
@@ -1518,132 +716,292 @@ app.post('/admin-reply', authenticateAdminToken, async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+/////////////////////////////////////////payment////////////////////////////////////////////////////////////////////
+app.post('/payment', authenticateToken, async (req, res) => {
+  try {
+    const { user_id, email, name } = req.user;
+
+    // Create a Stripe customer
+    const customer = await stripe.customers.create({
+      email,
+      name,
+    });
+
+    // Create a PaymentIntent
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: req.body.amount,
+      currency: req.body.currency || "USD",
+      customer: customer.id,
+    });
+    const updateStatusQuery = 'UPDATE stadiums SET approval_status = $1 WHERE owner_id = $2 AND approval_status = $3 RETURNING approval_status';
+    const updatedStatus = await pool.query(updateStatusQuery, ['approved', user_id, 'pending']);
+
+    const updateUserRoleQuery = 'UPDATE users SET user_role = $1 WHERE user_id = $2 RETURNING user_role';
+    const updatedUserRole = await pool.query(updateUserRoleQuery, [2, user_id]);
+
+    const updateBookingQuery = 'UPDATE bookings SET status = $1, payment_method = $2 WHERE booking_id = $3 RETURNING *';
+    const updatedBooking = await pool.query(updateBookingQuery, ['approved', 'stripe', req.body.booking_id]);
+
+    // Insert payment details into the payments table
+    const insertPaymentQuery = `
+      INSERT INTO payments (user_id, stadium_id, booking_id, payment_amount, payment_date)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *`;
+
+    const paymentResult = await pool.query(insertPaymentQuery, [
+      user_id,
+      req.body.stadium_id,
+      req.body.booking_id,
+      req.body.amount,
+      new Date()
+    ]);
+
+    // Return success response
+    res.status(200).json({
+      success: true,
+      message: 'Payment processed successfully',
+      updatedStatus: updatedStatus.rows[0],
+      updatedUserRole: updatedUserRole.rows[0],
+      updatedBooking: updatedBooking.rows[0],
+      paymentResult: paymentResult.rows[0],
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while processing payment' });
+  }
+});
+// app.post('/payment', authenticateToken, async (req, res) => {
+//   try {
+//     const { user_id, email, name } = req.user;
+//     const { user, selectedPlan } = req.body;
+
+//     // Create a Stripe customer
+//     const customer = await stripe.customers.create({
+//       email: user.email,
+//       name: user.name,
+//     });
+
+//     // Create a PaymentIntent
+//     const paymentIntent = await stripe.paymentIntents.create({
+//       amount: req.body.amount,
+//       currency: req.body.currency || "USD",
+//       customer: customer.id,
+//     });
+
+//     // ... (Rest of your payment processing logic)
+
+//     // Insert payment details into the payments table
+//     const insertPaymentQuery = `
+//       INSERT INTO payments (user_id, stadium_id, booking_id, payment_amount, payment_date)
+//       VALUES ($1, $2, $3, $4, $5)
+//       RETURNING *`;
+
+//     const paymentResult = await pool.query(insertPaymentQuery, [
+//       user_id,
+//       req.body.stadium_id,
+//       req.body.booking_id,
+//       req.body.amount,
+//       new Date()
+//     ]);
+
+//     // Return success response
+//     res.status(200).json({
+//       success: true,
+//       message: 'Payment processed successfully',
+//       // ... (other data you want to return)
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'An error occurred while processing payment' });
+//   }
+// });
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-app.post('/AddToCart', authenticateToken, async (req, res) => {
-  const { id_product, quantity } = req.body;
-  const { user_id } = req.user;
+// app.post('/AddToCart', authenticateToken, async (req, res) => {
+//   const { id_product, quantity } = req.body;
+//   const { user_id } = req.user;
 
-  try {
-    // جلب معلومات المنتج من جدول البروداكت
-    const productResult = await pool.query('SELECT * FROM products WHERE id_product = $1', [id_product]);
+//   try {
+//     // Fetch product information
+//     const productResult = await pool.query('SELECT * FROM products WHERE id_product = $1', [id_product]);
 
-    if (productResult.rows.length === 0) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
+//     if (productResult.rows.length === 0) {
+//       return res.status(404).json({ message: 'Product not found' });
+//     }
 
-    const product = productResult.rows[0];
-    const total_price = product.price * quantity;
+//     const product = productResult.rows[0];
+//     const total_price = product.price * quantity;
 
-    if (product.quantity < quantity) {
-      return res.status(400).json({ message: 'Insufficient quantity available' });
-    }
+//     if (product.quantity < quantity) {
+//       return res.status(400).json({ message: 'Insufficient quantity available' });
+//     }
 
-    const cartResult = await pool.query(
-      `INSERT INTO cart (user_id, product_id, quantity, total_price, created_at)
-        VALUES ($1, $2, $3, $4, current_timestamp) RETURNING *`,
-      [user_id, id_product, quantity, total_price]
-    );
+//     // Start a transaction
+//     const client = await pool.connect();
+//     try {
+//       // Begin the transaction
+//       await client.query('BEGIN');
 
-    // تحديث كمية المنتج في جدول البروداكت
-    const updatedQuantity = product.quantity - quantity;
-    await pool.query('UPDATE products SET quantity = $1 WHERE id_product = $2', [updatedQuantity, id_product]);
+//       // Insert into the cart
+//       const cartResult = await client.query(
+//         `INSERT INTO cart (user_id, product_id, quantity, total_price, created_at)
+//         VALUES ($1, $2, $3, $4, current_timestamp) RETURNING *`,
+//         [user_id, id_product, quantity, total_price]
+//       );
 
-    res.json({ message: 'Product added to cart successfully', cart_item: cartResult.rows[0] });
-  } catch (error) {
-    console.error('Error executing query', error);
-    res.status(500).json({ message: 'Internal server error' });
+//       // Update product quantity
+//       const updatedQuantity = product.quantity - quantity;
+//       await client.query('UPDATE products SET quantity = $1 WHERE id_product = $2', [updatedQuantity, id_product]);
+
+//       // Commit the transaction
+//       await client.query('COMMIT');
+
+//       res.json({ message: 'Product added to cart successfully', cart_item: cartResult.rows[0] });
+//     } catch (error) {
+//       // If there's an error, rollback the transaction
+//       await client.query('ROLLBACK');
+//       throw error;
+//     } finally {
+//       // Release the client back to the pool
+//       client.release();
+//     }
+//   } catch (error) {
+//     console.error('Error executing query', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
+
+// app.get('/ViewCart', authenticateToken, async (req, res) => {
+//   const { user_id } = req.user;
+
+//   try {
+//     const cartItemsResult = await pool.query(
+//       `SELECT c.*, p.price
+//        FROM cart c
+//        JOIN products p ON c.product_id = p.id_product
+//        WHERE c.user_id = $1`,
+//       [user_id]
+//     );
+
+//     res.json({ message: 'Cart items retrieved successfully', cart_items: cartItemsResult.rows });
+//   } catch (error) {
+//     console.error('Error executing query', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
+
+
+
+// app.put('/UpdateCart/:cart_id', authenticateToken, async (req, res) => {
+//   const { cart_id } = req.params;
+//   const { quantity } = req.body;
+//   const { user_id } = req.user;
+
+//   // تحقق من أن القيمة هي رقم صحيح أو عشري
+//   const parsedQuantity = parseFloat(quantity);
+
+//   if (isNaN(parsedQuantity)) {
+//     return res.status(400).json({ message: 'Invalid quantity value' });
+//   }
+
+//   try {
+//     // جلب معلومات العنصر في سلة التسوق
+//     const cartItemResult = await pool.query('SELECT * FROM cart WHERE cart_id = $1 AND user_id = $2', [cart_id, user_id]);
+
+//     if (cartItemResult.rows.length === 0) {
+//       return res.status(404).json({ message: 'Cart item not found' });
+//     }
+
+//     const cartItem = cartItemResult.rows[0];
+//     const { product_id, previous_quantity } = cartItem;
+
+//     // جلب معلومات المنتج من جدول المنتجات
+//     const productResult = await pool.query('SELECT * FROM store WHERE id_store = $1', [product_id]);
+
+//     if (productResult.rows.length === 0) {
+//       return res.status(404).json({ message: 'Product not found' });
+//     }
+
+//     const product = productResult.rows[0];
+//     const { quantity: availableQuantity, price } = product;
+
+//     // حساب الكمية المتاحة بعد التحديث
+//     const updatedAvailableQuantity = availableQuantity + previous_quantity - parsedQuantity;
+
+//     // التحقق من أن الكمية المتاحة لا تصبح سالبة
+//     if (updatedAvailableQuantity < 0) {
+//       return res.status(400).json({ message: 'Quantity not available' });
+//     }
+
+//     // تحديث الكمية والسعر في جدول سلة التسوق
+//     const updatedCartItemResult = await pool.query(
+//       `UPDATE cart SET quantity = $1, total_price = $2 WHERE cart_id = $3 RETURNING *`,
+//       [parsedQuantity, price * parsedQuantity, cart_id]
+//     );
+
+//     // إعادة الكمية المتاحة إلى جدول المنتجات
+//     await pool.query('UPDATE store SET quantity = $1 WHERE id_store = $2', [updatedAvailableQuantity, product_id]);
+
+//     res.json({ message: 'Cart item updated successfully', cart_item: updatedCartItemResult.rows[0] });
+//   } catch (error) {
+//     console.error('Error executing query', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
+
+// http://localhost:2000/create-checkout-session
+// const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+app.get('/create-checkout-session', async function getPayment(req, res){
+  try{
+      // const userID = req.user.id;
+      // const allOrders = await Order.findAll({
+      //     where : {
+      //         user_order_id : userID,
+      //         is_deleted : false,
+      //         is_payed : false,
+      //     }
+      // });
+      // let total = 0;
+      let items = [];
+      for (let i = 0; i < 1; i++){
+          // total = total + (allOrders[i].order_price * allOrders[i].order_count);
+          // let theProduct = await Products.findByPk(allOrders[i].product_order_id);
+          // console.log(allOrders[i].order_price)
+          items.push({
+              price_data : {
+                  currency : "usd",
+                  product_data : {
+                      name : `name of the product from tha array`,
+                      // images : [theProduct.img_url],
+                      description : `description for all the products from the array`,
+                  },
+                  unit_amount : `1110`,
+              },
+              quantity: 5,
+          })
+      };
+      const successUrl = `http://localhost:3000/`;
+      const cancelUrl = `http://localhost:3000/not`;
+  const session = await stripe.checkout.sessions.create({
+      line_items : items,
+      mode: 'payment',
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+    });
+    res.send(session.url);
+  }catch(error){
+      console.log(error);
+      res.status(500).json('error in payment controller')
   }
-});
-
-
-app.get('/ViewCart', authenticateToken, async (req, res) => {
-  const { user_id } = req.user;
-
-  try {
-    const cartItemsResult = await pool.query(
-      `SELECT c.*, p.price
-       FROM cart c
-       JOIN products p ON c.product_id = p.id_product
-       WHERE c.user_id = $1`,
-      [user_id]
-    );
-
-    res.json({ message: 'Cart items retrieved successfully', cart_items: cartItemsResult.rows });
-  } catch (error) {
-    console.error('Error executing query', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-
-
-app.put('/UpdateCart/:cart_id', authenticateToken, async (req, res) => {
-  const { cart_id } = req.params;
-  const { quantity } = req.body;
-  const { user_id } = req.user;
-
-  // تحقق من أن القيمة هي رقم صحيح أو عشري
-  const parsedQuantity = parseFloat(quantity);
-
-  if (isNaN(parsedQuantity)) {
-    return res.status(400).json({ message: 'Invalid quantity value' });
-  }
-
-  try {
-    // جلب معلومات العنصر في سلة التسوق
-    const cartItemResult = await pool.query('SELECT * FROM cart WHERE cart_id = $1 AND user_id = $2', [cart_id, user_id]);
-
-    if (cartItemResult.rows.length === 0) {
-      return res.status(404).json({ message: 'Cart item not found' });
-    }
-
-    const cartItem = cartItemResult.rows[0];
-    const { product_id, previous_quantity } = cartItem;
-
-    // جلب معلومات المنتج من جدول المنتجات
-    const productResult = await pool.query('SELECT * FROM store WHERE id_store = $1', [product_id]);
-
-    if (productResult.rows.length === 0) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
-
-    const product = productResult.rows[0];
-    const { quantity: availableQuantity, price } = product;
-
-    // حساب الكمية المتاحة بعد التحديث
-    const updatedAvailableQuantity = availableQuantity + previous_quantity - parsedQuantity;
-
-    // التحقق من أن الكمية المتاحة لا تصبح سالبة
-    if (updatedAvailableQuantity < 0) {
-      return res.status(400).json({ message: 'Quantity not available' });
-    }
-
-    // تحديث الكمية والسعر في جدول سلة التسوق
-    const updatedCartItemResult = await pool.query(
-      `UPDATE cart SET quantity = $1, total_price = $2 WHERE cart_id = $3 RETURNING *`,
-      [parsedQuantity, price * parsedQuantity, cart_id]
-    );
-
-    // إعادة الكمية المتاحة إلى جدول المنتجات
-    await pool.query('UPDATE store SET quantity = $1 WHERE id_store = $2', [updatedAvailableQuantity, product_id]);
-
-    res.json({ message: 'Cart item updated successfully', cart_item: updatedCartItemResult.rows[0] });
-  } catch (error) {
-    console.error('Error executing query', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-
-
+})
 
 app.post('/order', authenticateToken, async (req, res) => {
   const { cart_id } = req.body;
   const { user_id } = req.user;
 
   try {
-    // جلب معلومات السلة للمستخدم
     const cartResult = await pool.query('SELECT * FROM cart WHERE user_id = $1 AND cart_id = $2', [user_id, cart_id]);
 
     if (cartResult.rows.length === 0) {
@@ -1668,21 +1026,140 @@ app.post('/order', authenticateToken, async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
-//--------------------------------------------------------------------------------------------------------//
 
 
+app.get('/view-products', async (req, res) => {
+  try {
+      const result = await pool.query('SELECT * FROM products WHERE deleted = false');
+      res.json({ message: 'Products retrieved successfully', products: result.rows });
+  } catch (error) {
+      console.error('Error executing query', error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.delete('/wishlist/:entry_id', authenticateToken, async (req, res) => {
+  const { entry_id } = req.params;
+  const { user_id } = req.user;
+
+  try {
+    const deleteResult = await pool.query(
+      'DELETE FROM wishlists WHERE id = $1 AND user_id = $2 RETURNING *',
+      [entry_id, user_id]
+    );
+
+    if (deleteResult.rows.length === 0) {
+      return res.status(404).json({ message: 'Wishlist entry not found' });
+    }
+
+    res.json({ message: 'Wishlist entry deleted successfully', deletedEntry: deleteResult.rows[0] });
+  } catch (error) {
+    console.error('Error executing query', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 
+/////////////////////////// add comment & rete ////////////////////////////////////////////////////////////
+// الطلب للحصول على متوسط التقييم وتحديثه في جدول الاستعراضات
+app.post('/add-review', authenticateToken, async (req, res) => {
+  const { stadium_id, rating, comment } = req.body;
+  const { user_id } = req.user;
+
+  try {
+    // التحقق من وجود تقييم سابق للمستخدم على هذا الملعب
+    const existingReviewResult = await pool.query(
+      'SELECT * FROM stadium_reviews WHERE stadium_id = $1 AND user_id = $2',
+      [stadium_id, user_id]
+    );
+
+    if (rating >= 1 && rating <= 5) {
+      if (existingReviewResult.rows.length === 0) {
+        // إذا لم يكن هناك تقييم سابق، أقم بإضافة تقييم جديد
+        const result = await pool.query(
+          'INSERT INTO stadium_reviews (stadium_id, user_id, rating, comment) VALUES ($1, $2, $3, $4) RETURNING *',
+          [stadium_id, user_id, rating, comment]
+        );
+
+        // حساب متوسط التقييم وتحديثه في جدول الاستعراضات
+        await updateAverageRating(stadium_id);
+
+        res.json({ message: 'Review added successfully', review: result.rows[0] });
+      } else {
+        // إذا كان هناك تقييم سابق، قم بتحديثه
+        const result = await pool.query(
+          'UPDATE stadium_reviews SET rating = $1, comment = $2 WHERE stadium_id = $3 AND user_id = $4 RETURNING *',
+          [rating, comment, stadium_id, user_id]
+        );
+
+        // حساب متوسط التقييم وتحديثه في جدول الاستعراضات
+        await updateAverageRating(stadium_id);
+
+        res.json({ message: 'Review updated successfully', review: result.rows[0] });
+      }
+    } else {
+      res.status(400).json({ message: 'Invalid rating. Rating must be between 1 and 5.' });
+    }
+  } catch (error) {
+    console.error('Error executing query', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// function for avg 
+async function updateAverageRating(stadiumId) {
+  try {
+    const result = await pool.query(
+      'UPDATE stadium_reviews SET average_rating = (SELECT AVG(rating) FROM stadium_reviews WHERE stadium_id = $1) WHERE stadium_id = $1',
+      [stadiumId]
+    );
+  } catch (error) {
+    console.error('Error updating average rating', error);
+  }
+}
+
+// get reviwe and comments for stadium 
+app.get('/stadium-reviews/:stadium_id', async (req, res) => {
+  const stadiumId = req.params.stadium_id;
+
+  try {
+    const averageRatingResult = await pool.query(
+      'SELECT AVG(rating) as average_rating FROM stadium_reviews WHERE stadium_id = $1',
+      [stadiumId]
+    );
+
+    const averageRating = averageRatingResult.rows[0]?.average_rating || 0;
+
+    const commentsResult = await pool.query(
+      'SELECT * FROM stadium_reviews WHERE stadium_id = $1',
+      [stadiumId]
+    );
+
+    const comments = commentsResult.rows;
+
+    res.json({ averageRating, comments });
+  } catch (error) {
+    console.error('Error executing query', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 
+app.post('/create-payment-intent', async (req, res) => {
+  const { amount, currency } = req.body;
 
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount,
+      currency,
+    });
 
-
-
-
-
-
-
+    res.status(200).json({ clientSecret: paymentIntent.client_secret });
+  } catch (error) {
+    console.error('Error creating payment intent:', error);
+    res.status(500).send({ error: 'Failed to create payment intent' });
+  }
+});
 /////////////////////////////////////////////////////////////////////////////
 app.listen(2000, () => {
   console.log("server running at http://localhost:2000");

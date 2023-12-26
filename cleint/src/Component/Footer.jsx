@@ -124,7 +124,7 @@ function Footer() {
             className="mb-6 text-base font-medium text-white"
             id="footer-header"
           >
-            About us
+            Who we are?
           </h3>
           <ul>
             <li className="mb-2 leading-6">
@@ -132,7 +132,7 @@ function Footer() {
                 to="/aboutus"
                 className="transition-colors duration-300 hover:text-emerald-100 focus:text-emerald-50"
               >
-                About us
+               Who we are?
               </Link>
             </li>
             <li className="mb-2 leading-6">
@@ -190,7 +190,7 @@ function Footer() {
                 className="transition-colors duration-300 hover:text-emerald-100 focus:text-emerald-50"
               >
                
-                Contact
+                Contact us
               </Link>
             </li>
             <li className="mb-2 leading-6">
@@ -230,7 +230,7 @@ function Footer() {
     <div className="container px-6 mx-auto">
       <div className="grid grid-cols-4 gap-6 md:grid-cols-8 lg:grid-cols-12">
         <div className="col-span-2 md:col-span-4 lg:col-span-6">
-          Copyright 2023 Footboolia
+          Copyright @ 2023 Footboolia
         </div>
         <nav
           aria-labelledby="footer-social-links"

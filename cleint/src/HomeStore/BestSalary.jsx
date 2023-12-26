@@ -1,43 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Link } from 'react-router-dom';  // استيراد useNavigate
 
 function BestSalary({ onAddToCart, onAddToWishlist }) {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
-  const [heartCount, setHeartCount] = useState(0);
 
   useEffect(() => {
     axios.get('http://localhost:3010/product')
       .then(response => {
-        setProducts(response.data);
+        setProducts(response.data.slice(0, 4));
       })
       .catch(error => {
         console.error('Error fetching product data:', error);
-        setError('Error fetching product data');
+        setError(`Error fetching product data: ${error.message}`);
       });
   }, []);
 
   const handleAddToCart = (product) => {
-    onAddToCart(product);
-    toast.success('Product added to cart!', {
-      position: 'top-center',
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
+    const cartItem = {
+      title: product.title,
+      price: product.price,
+      image: product.image,
+    };
 
-    // بمجرد إضافة المنتج إلى العربة، قم بتوجيه المستخدم إلى صفحة العربة
+    axios.post('http://localhost:3010/cart', cartItem)
+      .then(response => {
+        console.log('Product added to cart:', response.data);
+        onAddToCart(product);
+        showToast('Product added to cart!');
+      })
+      .catch(cartError => {
+        console.error('Error adding product to cart:', cartError);
+        showToast(`Error adding product to cart: ${cartError.message}`, 'error');
+      });
   };
 
   const handleAddToWishlist = (product) => {
     onAddToWishlist(product);
-    setHeartCount(heartCount + 1);
-    toast.success('Product added to wishlist!', {
+    showToast('Product added to wishlist!');
+  };
+
+  const showToast = (message, type = 'success') => {
+    toast[type](message, {
       position: 'top-center',
       autoClose: 2000,
       hideProgressBar: false,
@@ -47,28 +54,30 @@ function BestSalary({ onAddToCart, onAddToWishlist }) {
     });
   };
 
-
   return (
     <div>
-      {error && <div>Error: {error}</div>}
-      <section className="flex items-center py-20 bg-white lg:h-screen dark:bg-gray-800 ">
-        <div className="px-4 mx-auto max-w-7xl mt-12">
-          <div className="grid grid-cols-1 gap-4 lg:gap-6 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4 ">
-            {products.map((product, index) => (
-              <div key={index} className="relative overflow-hidden bg-white shadow rounded-xl dark:bg-gray-700 mt-12">
-                <div className="relative overflow-hidden ">
+      <div className="best-seller-section">
+        <h1 className="best-seller-title">Best Salary</h1>
+        <hr className="orange-line" />
+      </div>
+      <section className="flex items-center py-20 bg-gray-70 lg:h-[60vh] dark:bg-gray-800 mt-16">
+        <div className="px-4 mx-auto max-w-7xl mb-32">
+          <div className="grid grid-cols-1 gap-4 lg:gap-6 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {products.map((product) => (
+              <div key={product.id} className="relative overflow-hidden bg-white shadow rounded-xl dark:bg-gray-700 mt-12">
+                <div className="relative overflow-hidden">
                   <div className="mb-5 overflow-hidden">
-                    <img
-                      className="object-cover w-full mx-auto transition-all rounded h-72 hover:scale-110"
-                      src={product.image}
-                      alt=""
-                    />
+                    <Link to={`/product/${product.id}`}>
+                      <img
+                        className="object-cover w-full mx-auto transition-all rounded h-72 hover:scale-110"
+                        src={product.image}
+                        alt=""
+                      />
+                    </Link>
                   </div>
                   <button
-                    onClick={() => {
-                      handleAddToWishlist(product);
-                    }}
-                    className="absolute top-0 left-0 p-3 bg-emerald-500 rounded-l-none hover:bg-emerald-600 rounded-t-xl "
+                    onClick={() => handleAddToWishlist(product)}
+                    className="absolute top-0 left-0 p-3 bg-emerald-500 rounded-l-none hover:bg-emerald-600 rounded-t-xl"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -85,11 +94,9 @@ function BestSalary({ onAddToCart, onAddToWishlist }) {
                     </svg>
                   </button>
                 </div>
-                <Link to={`/product/${product.id}`}>
-                  <h3 className="px-5 mb-4 text-lg font-bold dark:text-white">
-                    {product.title}
-                  </h3>
-                </Link>
+                <h3 className="px-5 mb-4 text-lg font-bold dark:text-white">
+                  {product.title}
+                </h3>
                 <div className="flex">
                   <div className="w-1/2 px-5 pb-3">
                     <p className="text-lg font-bold text-emerald-600 dark:text-emerald-300">
@@ -99,12 +106,14 @@ function BestSalary({ onAddToCart, onAddToWishlist }) {
                       ${product.originalPrice}
                     </span>
                   </div>
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    className="flex-1 text-sm text-white transition-all bg-emerald-600 rounded-r-none hover:bg-teal-600 rounded-t-xl"
-                  >
-                    {product.buttonText}
-                  </button>
+                  {product.buttonText && (
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      className="flex-1 text-sm text-white transition-all bg-emerald-600 rounded-r-none hover:bg-teal-600 rounded-t-xl"
+                    >
+                      {product.buttonText}
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

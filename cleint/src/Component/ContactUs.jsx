@@ -1,260 +1,4 @@
-// // import React from 'react'
-
-// // function ContactUs() {
-// //   return (
-// //     <div>
-// //       <div class="container my-12 mx-auto px-2 md:px-4 mt-32">
-// // <section class="mb-32">
-
-// //     <div class="flex justify-center">
-// //         <div class="text-center md:max-w-xl lg:max-w-3xl">
-// //             <h2 class="mb-12 px-6 text-3xl font-bold">
-// //                 Contact us
-// //             </h2>
-// //         </div>
-// //     </div>
-
-// //     <div class="flex flex-wrap">
-
-// //         <form class="mb-12 w-full shrink-0 grow-0 basis-auto md:px-3 lg:mb-0 lg:w-5/12 lg:px-6">
-
-// //             <div class="mb-3 w-full">
-// //                 <label class="block font-medium mb-[2px] text-emerald-700" htmlFor="exampleInput90">
-// //                         Name
-// //                 </label>
-// //                 <input type="text" class="px-2 py-2 border w-full outline-none rounded-md" id="exampleInput90" placeholder="Name" />
-// //             </div>
-
-// //             <div class="mb-3 w-full">
-// //                 <label class="block font-medium mb-[2px] text-emerald-700" htmlFor="exampleInput90">
-// //                         Email
-// //                 </label>
-// //                 <input type="email" class="px-2 py-2 border w-full outline-none rounded-md" id="exampleInput90"
-// //                         placeholder="Enter your email address" />
-// //             </div>
-
-// //             <div class="mb-3 w-full">
-// //                 <label class="block font-medium mb-[2px] text-emerald-700" htmlFor="exampleInput90">
-// //                         Message
-// //                 </label>
-// //                 <textarea class="px-2 py-2 border rounded-[5px] w-full outline-none" name="" id=""></textarea>
-// //             </div>
-
-// //             <button type="button"
-// //                     class="mb-6 inline-block w-full rounded bg-emerald-400 px-6 py-2.5 font-medium uppercase leading-normal text-white hover:shadow-md hover:bg-emerald-500">
-// //                     Send
-// //             </button>
-
-// //         </form>
-
-// //         <div class="w-full shrink-0 grow-0 basis-auto lg:w-7/12">
-// //             <div class="flex flex-wrap">
-// //                 <div class="mb-12 w-full shrink-0 grow-0 basis-auto md:w-6/12 md:px-3 lg:px-6">
-// //                     <div class="flex items-start">
-// //                         <div class="shrink-0">
-// //                             <div class="inline-block rounded-md bg-teal-400-100 p-4 text-emerald-700">
-// //                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-// //                                     stroke-width="2" stroke="currentColor" class="h-6 w-6">
-// //                                     <path stroke-linecap="round" stroke-linejoin="round"
-// //                                         d="M14.25 9.75v-4.5m0 4.5h4.5m-4.5 0l6-6m-3 18c-8.284 0-15-6.716-15-15V4.5A2.25 2.25 0 014.5 2.25h1.372c.516 0 .966.351 1.091.852l1.106 4.423c.11.44-.054.902-.417 1.173l-1.293.97a1.062 1.062 0 00-.38 1.21 12.035 12.035 0 007.143 7.143c.441.162.928-.004 1.21-.38l.97-1.293a1.125 1.125 0 011.173-.417l4.423 1.106c.5.125.852.575.852 1.091V19.5a2.25 2.25 0 01-2.25 2.25h-2.25z" />
-// //                                 </svg>
-// //                             </div>
-// //                         </div>
-// //                         <div class="ml-6 grow">
-// //                             <p class="mb-2 font-bold">
-// //                                 Technical support
-// //                             </p>
-// //                             <p class="text-neutral-500 ">
-// //                                 nedalraed55@gmail.com
-// //                             </p>
-// //                             <p class="text-neutral-500 ">
-// //                                 +926 780 7850 34
-// //                             </p>
-// //                         </div>
-// //                     </div>
-// //                 </div>
-// //                 <div class="mb-12 w-full shrink-0 grow-0 basis-auto md:w-6/12 md:px-3 lg:px-6">
-// //                     <div class="flex items-start">
-// //                         <div class="shrink-0">
-// //                             <div class="inline-block rounded-md bg-teal-400-100 p-4 text-emerald-700">
-// //                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-// //                                     stroke-width="2" stroke="currentColor" class="h-6 w-6">
-// //                                     <path stroke-linecap="round" stroke-linejoin="round"
-// //                                         d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-// //                                 </svg>
-// //                             </div>
-// //                         </div>
-// //                         <div class="ml-6 grow">
-// //                             <p class="mb-2 font-bold ">
-// //                                 Sales questions
-// //                             </p>
-// //                             <p class="text-neutral-500 ">
-// //                                 nedalraed55@gmail.com
-// //                             </p>
-// //                             <p class="text-neutral-500 ">
-// //                                 +926 780 7850 34
-// //                             </p>
-// //                         </div>
-// //                     </div>
-// //                 </div>
-// //                 <div class="mb-12 w-full shrink-0 grow-0 basis-auto md:w-6/12 md:px-3 lg:px-6">
-// //                     <div class="align-start flex">
-// //                         <div class="shrink-0">
-// //                             <div class="inline-block rounded-md bg-teal-400-100 p-4 text-emerald-700">
-// //                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-// //                                     stroke-width="2" stroke="currentColor" class="h-6 w-6">
-// //                                     <path stroke-linecap="round" stroke-linejoin="round"
-// //                                         d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
-// //                                 </svg>
-// //                             </div>
-// //                         </div>
-// //                         <div class="ml-6 grow">
-// //                             <p class="mb-2 font-bold ">Press</p>
-// //                             <p class="text-neutral-500 ">
-// //                                 nedalraed55@gmail.com
-// //                             </p>
-// //                             <p class="text-neutral-500 ">
-// //                                 +926 780 7850 34
-// //                             </p>
-// //                         </div>
-// //                     </div>
-// //                 </div>
-// //                 <div class="mb-12 w-full shrink-0 grow-0 basis-auto md:w-6/12 md:px-3 lg:px-6">
-// //                     <div class="align-start flex">
-// //                         <div class="shrink-0">
-// //                             <div class="inline-block rounded-md bg-teal-400-100 p-4 text-emerald-700">
-// //                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-// //                                     stroke-width="2" stroke="currentColor" class="h-6 w-6">
-// //                                     <path stroke-linecap="round" stroke-linejoin="round"
-// //                                         d="M12 12.75c1.148 0 2.278.08 3.383.237 1.037.146 1.866.966 1.866 2.013 0 3.728-2.35 6.75-5.25 6.75S6.75 18.728 6.75 15c0-1.046.83-1.867 1.866-2.013A24.204 24.204 0 0112 12.75zm0 0c2.883 0 5.647.508 8.207 1.44a23.91 23.91 0 01-1.152 6.06M12 12.75c-2.883 0-5.647.508-8.208 1.44.125 2.104.52 4.136 1.153 6.06M12 12.75a2.25 2.25 0 002.248-2.354M12 12.75a2.25 2.25 0 01-2.248-2.354M12 8.25c.995 0 1.971-.08 2.922-.236.403-.066.74-.358.795-.762a3.778 3.778 0 00-.399-2.25M12 8.25c-.995 0-1.97-.08-2.922-.236-.402-.066-.74-.358-.795-.762a3.734 3.734 0 01.4-2.253M12 8.25a2.25 2.25 0 00-2.248 2.146M12 8.25a2.25 2.25 0 012.248 2.146M8.683 5a6.032 6.032 0 01-1.155-1.002c.07-.63.27-1.222.574-1.747m.581 2.749A3.75 3.75 0 0115.318 5m0 0c.427-.283.815-.62 1.155-.999a4.471 4.471 0 00-.575-1.752M4.921 6a24.048 24.048 0 00-.392 3.314c1.668.546 3.416.914 5.223 1.082M19.08 6c.205 1.08.337 2.187.392 3.314a23.882 23.882 0 01-5.223 1.082" />
-// //                                 </svg>
-// //                             </div>
-// //                         </div>
-// //                         <div class="ml-6 grow">
-// //                             <p class="mb-2 font-bold">
-// //                                 Bug report
-// //                             </p>
-// //                             <p class="text-neutral-500 ">
-// //                                 nedalraed55@gmail.com
-// //                             </p>
-// //                             <p class="text-neutral-500 ">
-// //                                 +926 780 7850 34
-// //                             </p>
-// //                         </div>
-// //                     </div>
-// //                 </div>
-// //             </div>
-// //         </div>
-
-// //     </div>
-// // </section>
-// // </div>
-// //     </div>
-// //   )
-// // }
-
-// // export default ContactUs
-
-
-// import React, { useState } from 'react';
-// import axios from 'axios';
-
-// function ContactUs() {
-//   const [formData, setFormData] = useState({
-//     full_name: '',
-//     email: '',
-//     message: '',
-//   });
-
-//   const handleChange = (e) => {
-//     setFormData({
-//       ...formData,
-//       [e.target.name]: e.target.value,
-//     });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     try {
-//       const response = await axios.post('http://localhost:3000/contact', formData);
-
-//       if (response.status === 200) {
-//         console.log('Email sent successfully');
-//       } else {
-//         console.error('Failed to send email');
-//       }
-//     } catch (error) {
-//       console.error('Error sending email:', error.message);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <div className="container my-12 mx-auto px-2 md:px-4 mt-32">
-//         <form
-//           onSubmit={handleSubmit}
-//           className="mb-12 w-full shrink-0 grow-0 basis-auto md:px-3 lg:mb-0 lg:w-5/12 lg:px-6"
-//         >
-//           <div className="mb-3 w-full">
-//             <label className="block font-medium mb-[2px] text-emerald-700" htmlFor="full_name">
-//               Name
-//             </label>
-//             <input
-//               type="text"
-//               name="full_name"
-//               value={formData.full_name}
-//               onChange={handleChange}
-//               className="px-2 py-2 border w-full outline-none rounded-md"
-//               id="full_name"
-//               placeholder="Name"
-//             />
-//           </div>
-
-//           <div className="mb-3 w-full">
-//             <label className="block font-medium mb-[2px] text-emerald-700" htmlFor="email">
-//               Email
-//             </label>
-//             <input
-//               type="email"
-//               name="email"
-//               value={formData.email}
-//               onChange={handleChange}
-//               className="px-2 py-2 border w-full outline-none rounded-md"
-//               id="email"
-//               placeholder="Enter your email address"
-//             />
-//           </div>
-
-//           <div className="mb-3 w-full">
-//             <label className="block font-medium mb-[2px] text-emerald-700" htmlFor="message">
-//               Message
-//             </label>
-//             <textarea
-//               name="message"
-//               value={formData.message}
-//               onChange={handleChange}
-//               className="px-2 py-2 border rounded-[5px] w-full outline-none"
-//               placeholder="Enter your message"
-//             ></textarea>
-//           </div>
-
-//           <button
-//             type="submit"
-//             className="mb-6 inline-block w-full rounded bg-emerald-400 px-6 py-2.5 font-medium uppercase leading-normal text-white hover:shadow-md hover:bg-emerald-500"
-//           >
-//             Send
-//           </button>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default ContactUs;
-
-
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 
 function ContactUs() {
@@ -263,6 +7,10 @@ function ContactUs() {
     email: '',
     message: '',
   });
+
+  const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -275,77 +23,114 @@ function ContactUs() {
     e.preventDefault();
 
     try {
+      // Form validation logic (add your own validation here)
+
+      // Show loading state
+      setLoading(true);
+
+      // Replace 'YOUR_BACKEND_ENDPOINT' with your actual backend endpoint
       const response = await axios.post('http://localhost:2000/contact', formData);
 
+      // Reset the form on successful submission
+      setFormData({
+        full_name: '',
+        email: '',
+        message: '',
+      });
+
+      // Provide feedback to the user
       if (response.status === 200) {
-        console.log('Email sent successfully');
+        setSubmitSuccess(true);
       } else {
-        console.error('Failed to send email');
+        setSubmitError('Failed to send email');
       }
     } catch (error) {
-      console.error('Error sending email:', error.message);
+      // Provide specific error messages to the user
+      setSubmitError(`Error sending email: ${error.message}`);
+    } finally {
+      // Hide loading state
+      setLoading(false);
     }
   };
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }, []);
 
   return (
-    <div className="container my-12 mx-auto px-2 md:px-4 mt-32">
-      <form
-        onSubmit={handleSubmit}
-        className="mb-12 w-full shrink-0 grow-0 basis-auto md:px-3 lg:mb-0 lg:w-5/12 lg:px-6"
-      >
-        <div className="mb-3 w-full">
-          <label className="block font-medium mb-[2px] text-emerald-700" htmlFor="full_name">
-            Name
-          </label>
-          <input
-            type="text"
-            name="full_name"
-            value={formData.full_name}
-            onChange={handleChange}
-            className="px-2 py-2 border w-full outline-none rounded-md"
-            id="full_name"
-            placeholder="Name"
+    <div className="font-[sans-serif] w-full max-w-7xl mx-auto relative bg-white rounded-3xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] overflow-hidden mt-32 mb-24">
+      <div className="absolute -top-6 -left-6 w-20 h-20 rounded-full bg-emerald-400" />
+      <div className="absolute -bottom-6 -left-0 w-24 h-20 rounded-tr-[40px] bg-teal-200" />
+      <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full bg-emerald-400" />
+      <div className="absolute -bottom-6 -right-0 w-24 h-20 rounded-tl-[40px] bg-emerald-300" />
+      <div className="grid md:grid-cols-2">
+        <div className="text-center p-6 xl:p-10 flex flex-col items-center justify-center">
+          <h2 className="text-3xl text-emerald-500 font-bold">Contact Us</h2>
+          <img
+            src="https://images.pexels.com/photos/8600867/pexels-photo-8600867.jpeg?auto=compress&cs=tinysrgb&w=600"
+            className="mt-4 shrink-0 w-full"
+            alt="Contact Us"
           />
         </div>
-
-        <div className="mb-3 w-full">
-          <label className="block font-medium mb-[2px] text-emerald-700" htmlFor="email">
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="px-2 py-2 border w-full outline-none rounded-md"
-            id="email"
-            placeholder="Enter your email address"
-          />
-        </div>
-
-        <div className="mb-3 w-full">
-          <label className="block font-medium mb-[2px] text-emerald-700" htmlFor="message">
-            Message
-          </label>
-          <textarea
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            className="px-2 py-2 border rounded-[5px] w-full outline-none"
-            placeholder="Enter your message"
-          ></textarea>
-        </div>
-
-        <button
-          type="submit"
-          className="mb-6 inline-block w-full rounded bg-emerald-400 px-6 py-2.5 font-medium uppercase leading-normal text-white hover:shadow-md hover:bg-emerald-500"
-        >
-          Send
-        </button>
-      </form>
+        <form onSubmit={handleSubmit} className="p-6 xl:p-10 mt-16">
+          <div className="max-w-sm mx-auto space-y-4">
+            <input
+              type="text"
+              name="full_name"
+              value={formData.full_name}
+              onChange={handleChange}
+              placeholder="Name"
+              className="w-full bg-gray-100 rounded-full py-3 px-6 text-sm outline-none"
+            />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email"
+              className="w-full bg-gray-100 rounded-full py-3 px-6 text-sm outline-none"
+            />
+            <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              placeholder="Message"
+              rows={6}
+              className="w-full bg-gray-100 rounded-3xl px-6 text-sm pt-3 outline-none"
+            />
+            <button
+              type="submit"
+              className="text-white w-full relative bg-emerald-500 hover:bg-emerald-600 font-semibold rounded-full text-sm px-6 py-3"
+              disabled={loading}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16px"
+                height="16px"
+                fill="#fff"
+                className="mr-2 inline"
+                viewBox="0 0 548.244 548.244"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M392.19 156.054 211.268 281.667 22.032 218.58C8.823 214.168-.076 201.775 0 187.852c.077-13.923 9.078-26.24 22.338-30.498L506.15 1.549c11.5-3.697 24.123-.663 32.666 7.88 8.542 8.543 11.577 21.165 7.879 32.666L390.89 525.906c-4.258 13.26-16.575 22.261-30.498 22.338-13.923.076-26.316-8.823-30.728-22.032l-63.393-190.153z"
+                  clipRule="evenodd"
+                  data-original="#000000"
+                />
+              </svg>
+              {loading ? 'Sending...' : 'Send Message'}
+            </button>
+          </div>
+        </form>
+      </div>
+      {/* Display success or error message */}
+      {submitSuccess && <p className="text-green-500">Email sent successfully!</p>}
+      {submitError && <p className="text-red-500">{submitError}</p>}
     </div>
   );
 }
 
 export default ContactUs;
-

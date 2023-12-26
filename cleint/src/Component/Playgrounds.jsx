@@ -7,7 +7,7 @@ import Cardsground from '../Plygroud/Cardsground';
 function Playgrounds() {
   return (
     <div>
-      <Herof />
+      {/* <Herof /> */}
       <Cardsground/>
     </div>
   );

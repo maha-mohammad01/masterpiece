@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import { Link,useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -64,6 +64,13 @@ function SignUp() {
       setError('Registration failed. Please try again.');
     }
   };
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+      left: 100,
+      behavior: 'smooth',
+    });
+  }, []);
 
   return (
     <div className="flex items-center justify-center h-screen z-[-10] mt-11">

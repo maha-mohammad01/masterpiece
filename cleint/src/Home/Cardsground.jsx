@@ -7,7 +7,7 @@ function Cardsground() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:2000/details/:stadium_id')
+      .get('http://localhost:2000/stadiums')
       .then((response) => {
         setLatestCards(response.data);
       })
@@ -33,6 +33,7 @@ function Cardsground() {
     <div
     style={{
       width: '90%',
+      height:'70%',
       margin: 'auto',
       display: 'flex',
       justifyContent: 'space-around',
@@ -45,9 +46,9 @@ function Cardsground() {
     }}
       className="relative mt-10 p-2 rounded-lg"
     >
-      {latestCards.map((card) => (
+      {latestCards.slice(0, 4).map((card) => (
         <div
-          key={card.stadium_id}
+          key={card.id}
           className="overflow-hidden bg-white rounded-md shadow-md text-slate-900 shadow-slate-200 mb-4 animate-card hover:animate-card-hover cursor-pointer "
           style={{
             flex: '0 0 22%',
@@ -95,4 +96,5 @@ function Cardsground() {
     </div>
   );
 }
+
 export default Cardsground;

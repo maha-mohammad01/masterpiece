@@ -1,36 +1,57 @@
-// routes/userRoutes.js
+// // // routes/userRoutes.js
+// const express = require('express');
+// const UserController = require('../controllers/userController');
+// const authenticateToken = require('../middleware/authenticateToken');
+// const multer = require('multer');
+// const upload = multer();
+
+// const router = express.Router();
+
+// router.post('/login', UserController.loginUser);
+// router.post('/register', UserController.registerUser);
+//  router.get('/user-profile', authenticateToken, UserController.getUserProfile);
+// router.post('/upload-upic', authenticateToken, upload.single('image'), UserController.uploadUserProfilePic);
+// router.delete('/delete-user', authenticateToken, UserController.deleteUser);
+// router.put('/update-user', authenticateToken, UserController.updateUser);
+// router.post('/book-stadium/:stadium_id', authenticateToken, UserController.bookStadium); // تمرير stadium_id هنا
+// router.get('/user-bookings', authenticateToken, UserController.getUserBookings); // الحصول على حجوزات المستخدم
+// router.post('/logout', UserController.logoutUser);
+// router.post('/wishlist/:product_id', authenticateToken, UserController.addToWishlist);
+// router.get('/wishlist', authenticateToken, UserController.getWishlist);
+// router.delete('/wishlist/:entry_id', authenticateToken, UserController.removeFromWishlist);
+// router.post('/addToCart', authenticateToken, UserController.addToCart);
+// router.get('/viewCart', authenticateToken, UserController.viewCart);
+// router.put('/updateCart/:cart_id', authenticateToken, UserController.updateCart);
+// router.post('/placeOrder', authenticateToken, UserController.placeOrder);
+// router.get('/viewProducts', UserController.viewProducts);
+
+// module.exports = router;
+
+
 const express = require('express');
-const router = express.Router();
-const userModel = require('../models/userModel');
-const authenticateToken = require('../middleware/authenticateToken'); 
-const userController = require('../controllers/userController');  
+const UserController = require('../controllers/userController');
+const { authenticateToken } = require('../middleware/authenticateToken'); // استيراد الدالة المناسبة
 const multer = require('multer');
-const contactsController = require('../controllers/contactsController');
+const upload = multer();
 
-// تكوين Multer
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'images/'); // تحديد مجلد الوجهة لتخزين الصور
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + '.' + file.originalname.split('.').pop());
-  },
-});
-const upload = multer({ storage: storage });
-router.post('/contact', contactsController.sendPublicEmail);
+const router = express.Router();
 
-router.post('/login', userController.login);
-router.post('/register', userController.register);
-
-router.use(authenticateToken);
-
-router.get('/user-profile', userController.getUserProfile);
-router.get('/user-bookings', userController.getUserBookings);
-router.put('/update-user', userController.updateUser);
-router.delete('/delete', userController.deleteUser);
-router.post('/upload-upic', upload.single('image'), userController.uploadUserProfilePic);
-// router.post('/book-stadium', userController.bookStadium); 
-router.get('/average-rating/:stadium_id', userController.getAverageRating);
-router.post('/add-review', authenticateToken, userController.submitReview);
+router.post('/login', UserController.loginUser);
+router.post('/register', UserController.registerUser);
+router.get('/user-profile', authenticateToken, UserController.getUserProfile);
+router.post('/upload-upic', authenticateToken, upload.single('image'), UserController.uploadUserProfilePic);
+router.delete('/delete-user', authenticateToken, UserController.deleteUser);
+router.put('/update-user', authenticateToken, UserController.updateUser);
+router.post('/book-stadium/:stadium_id', authenticateToken, UserController.bookStadium);
+router.get('/user-bookings', authenticateToken, UserController.getUserBookings);
+router.post('/logout', UserController.logoutUser);
+router.post('/wishlist/:product_id', authenticateToken, UserController.addToWishlist);
+router.get('/wishlist', authenticateToken, UserController.getWishlist);
+router.delete('/wishlist/:entry_id', authenticateToken, UserController.removeFromWishlist);
+router.post('/addToCart', authenticateToken, UserController.addToCart);
+router.get('/viewCart', authenticateToken, UserController.viewCart);
+router.put('/updateCart/:cart_id', authenticateToken, UserController.updateCart);
+router.post('/placeOrder', authenticateToken, UserController.placeOrder);
+router.get('/viewProducts', UserController.viewProducts);
 
 module.exports = router;

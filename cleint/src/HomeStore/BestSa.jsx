@@ -1,15 +1,15 @@
-import React from 'react'
+// import React from 'react'
 
-function BestSa() {
-  return (
-    <div>
-         <div className="best-seller-section ">
-          <h1 className="best-seller-title">Best Salary</h1>
-          <hr className="orange-line" />
+// function BestSa() {
+//   return (
+//     <div>
+//          <div className="best-seller-section ">
+//           <h1 className="best-seller-title">Best Salary</h1>
+//           <hr className="orange-line" />
           
-        </div>
-    </div>
-  )
-}
+//         </div>
+//     </div>
+//   )
+// }
 
-export default BestSa
+// export default BestSa

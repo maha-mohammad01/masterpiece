@@ -4,27 +4,22 @@ import { Link } from 'react-router-dom';
 function Addtoregister() {
   return (
     <div>
-      <div
-        className="bg-cover bg-center h-auto text-white py-24 px-10 object-fill mt-12 m-auto mb-12"
-        style={{
-          backgroundImage:
-            "url(https://png.pngtree.com/background/20230525/original/pngtree-soccer-stadium-in-the-dark-lit-picture-image_2729359.jpg)",width: '90%'
-        }}
-      >
-        <div className="md:w-1/2" style={{ width: '80%', margin: 'auto' }}>
-          <p className="font-bold text-sm uppercase">Add playgrounds</p>
-          <p className="text-3xl font-bold">There are so many! Your stadium is just a few quick clicks away...</p>
-          <p className="text-2xl mb-10 leading-none">
-            Register Now !
-          </p>
-          <Link
-            to="/addformplay"
-            className="bg-emerald-500 py-4 px-8 text-white font-bold uppercase text-xs rounded hover:bg-gray-200 hover:text-gray-800"
-          >
-            Register your Stadium!
-          </Link>
+<div class="bg-gradient-to-r from-emerald-700 to-emerald-500 w-[93%] mx-auto min-h-[400px] rounded-3xl p-6 text-white flex flex-col justify-center font-[sans-serif] overflow-hidden mt-16 mb-16">
+      <div class="grid md:grid-cols-2 justify-center items-center max-md:text-center gap-8 h-full">
+        <div class="max-w-md mx-auto">
+          <h2 class="text-4xl md:text-5xl font-extrabold mb-6 md:!leading-[55px]">Just a few clicks to register your stadium</h2>
+          <p class="text-base"></p>
+          <div class="mt-10">
+            <Link to="/addformplay">
+            <button type="button"
+              class="px-8 py-2 text-base tracking-wider font-semibold outline-none border border-white bg-white text-emerald-500 hover:bg-transparent hover:text-white transition-all duration-300">Resgister Your playground</button></Link>
+          </div>
+        </div>
+        <div class="md:text-right ">
+          <img src="https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Premium Benefits" class="object-cover rounded-full" />
         </div>
       </div>
+    </div>
     </div>
   );
 }

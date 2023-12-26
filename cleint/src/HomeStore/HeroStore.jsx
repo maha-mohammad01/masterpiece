@@ -18,7 +18,7 @@ function HeroStore() {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 400,
+    speed: 2000,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
@@ -27,12 +27,12 @@ function HeroStore() {
       <div
         style={{
           position: "absolute",
-          bottom: "20px",
-          right: "50%",
-          transform: "translateX(50%)",
+          bottom: "40px",
+          right: "90%",
+          transform: "translateX(45%)",
         }}
       >
-        <ul style={{ margin: "0" }}>{dots}</ul>
+        <ul style={{ margin: "10" }}>{dots}</ul>
       </div>
     ),
     customPaging: (i) => (
@@ -42,7 +42,7 @@ function HeroStore() {
           height: "15px",
           borderRadius: "50%",
           background: activeIndex === i ? "#1A9247" : "#ddd", // خضراء إذا كانت الصورة فعّالة
-          margin: "0 8px",
+          margin: "10px 8px",
         }}
       />
     ),
@@ -54,7 +54,7 @@ function HeroStore() {
       <img
         src="https://cdn.sportshop.com/convert/storage/gallery/hero_desktop/1695105026Slider-Desktop_1903x635px-Voetbal-COM.jpg"
         alt="Football"
-        className="h-full w-[80%] object-cover rounded-xl"
+        className="h-full w-full object-cover rounded-xl"
       />
       <img
         src="https://cdn.sportshop.com/convert/storage/gallery/hero_desktop/1695105027Slider-Desktop_1903x635px-Running-COM.jpg"

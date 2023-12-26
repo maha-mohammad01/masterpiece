@@ -1,6 +1,13 @@
-import React from 'react'
+import React, { useState,useEffect } from 'react';
 
 function AboutUs1() {
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }, []);
   return (
     <div>
       <section className="py-10 lg:py-20 bg-stone-100 font-poppins dark:bg-gray-800 mt-24">
@@ -13,7 +20,7 @@ function AboutUs1() {
               Who we are?
             </span>
             <h1 className="mt-2 text-3xl font-black text-gray-700 md:text-5xl dark:text-gray-300">
-              About Us
+            Who we are?
             </h1>
           </div>
           <p className="px-4 mb-10 text-base leading-7 text-gray-500 dark:text-gray-400">

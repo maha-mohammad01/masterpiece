@@ -77,9 +77,7 @@ const BookingForm = () => {
           pauseOnHover: true,
           draggable: true,
         });
-
-        // Use the navigate function to programmatically navigate to "/paymentform"
-        navigate('/paymentform');
+        navigate('/Payment');
       } else {
         console.error('Booking failed with status:', response.status);
         toast.error(`Booking failed with status: ${response.status}`, {
@@ -103,6 +101,13 @@ const BookingForm = () => {
       });
     }
   };
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+      left: 100,
+      behavior: 'smooth',
+    });
+  }, []);
   return (
     <div className="flex items-center justify-center p-12">
       <div className="mx-auto w-full max-w-[550px] bg-white mt-14">

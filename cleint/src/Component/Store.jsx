@@ -17,6 +17,7 @@ import WoHpro from '../HomeStore/WoHpro';
 import OpinCs from '../HomeStore/OpinCs';
 import Wocs from '../HomeStore/Wocs';
 import Banner from '../HomeStore/Banner';
+import Collction from '../HomeStore/Collction';
 
 function Store() {
   // الحالات والمتغيرات
@@ -49,6 +50,14 @@ function Store() {
     // إضافة إلى قائمة الرغبات
     setHeartCount(heartCount + 1);
   };
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+      // left: 0,
+      right:10,
+      behavior: 'smooth',
+    });
+  }, []);
 
   return (
     <div>
@@ -63,13 +72,14 @@ function Store() {
       <br></br><br></br><br></br><br></br>
 
       {/* أفضل الرواتب */}
-      <BestSa />
+      {/* <BestSa /> */}
       {products.length > 0 && <BestSalary onAddToCart={handleAddToCart} onAddToWishlist={handleAddToWishlist} />}
 
       {/* إعلانات */}
       <Adssec />
       <Shose />
       {products.length > 0 && <Shosepro onAddToCart={handleAddToCart} onAddToWishlist={handleAddToWishlist} />}
+      <Collction/>
 
       <BarAds />
       <WoHpro/>

@@ -23,18 +23,43 @@ function Hproduct({ onAddToCart, onAddToWishlist }) {
   const handleAddToCart = (product) => {
     // Callback to inform the parent component (e.g., App.js) that a product is added to the cart
     onAddToCart(product);
-
-    // Show a notification that the product has been added to the cart
-    toast.success('Product added to cart!', {
-      position: 'top-center',
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
+  
+    // Prepare the data to be sent to the server
+    const cartItem = {
+      title: product.title,
+      price: product.price,
+      image: product.image,
+    };
+  
+    // Send a POST request to the cart endpoint
+    axios.post('http://localhost:3010/cart', cartItem)
+      .then(response => {
+        console.log('Product added to cart:', response.data);
+  
+        // Show a notification that the product has been added to the cart
+        toast.success('Product added to cart!', {
+          position: 'top-center',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      })
+      .catch(cartError => {
+        console.error('Error adding product to cart:', cartError);
+  
+        // Show a notification that there was an error adding the product to the cart
+        toast.error('Error adding product to cart', {
+          position: 'top-center',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      });
   };
-
   const handleAddToWishlist = (product) => {
     // Callback to inform the parent component (e.g., App.js) that a product is added to the wishlist
     onAddToWishlist(product);

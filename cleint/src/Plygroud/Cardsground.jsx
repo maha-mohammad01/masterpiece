@@ -1,6 +1,3 @@
-
-//عرض جميع الملاعب 
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -9,19 +6,21 @@ function Cardsground() {
   const [playgrounds, setPlaygrounds] = useState([]);
   const [filteredPlaygrounds, setFilteredPlaygrounds] = useState([]);
   const [filterCriteria, setFilterCriteria] = useState({
-    location: '',
+    city: '',
     rating: '',
     size: '',
   });
-  const [location, setLocations] = useState([]);
+  const [city, setLocations] = useState([]);
   const [fieldSizes, setFieldSizes] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [playgroundsPerPage] = useState(8);
 
   useEffect(() => {
     axios.get('http://localhost:2000/stadiums')
       .then((response) => {
         setPlaygrounds(response.data);
         setFilteredPlaygrounds(response.data);
-        const uniqueLocations = [...new Set(response.data.map(playground => playground.location))];
+        const uniqueLocations = [...new Set(response.data.map(playground => playground.city))];
         const uniqueFieldSizes = [...new Set(response.data.map(playground => playground.size))];
         setLocations(uniqueLocations);
         setFieldSizes(uniqueFieldSizes);
@@ -38,9 +37,9 @@ function Cardsground() {
   const filterPlaygrounds = () => {
     let filtered = [...playgrounds];
 
-    if (filterCriteria.location) {
+    if (filterCriteria.city) {
       filtered = filtered.filter(playground =>
-        playground.location.toLowerCase().includes(filterCriteria.location.toLowerCase())
+        playground.city.toLowerCase().includes(filterCriteria.city.toLowerCase())
       );
     }
 
@@ -61,10 +60,11 @@ function Cardsground() {
     }
 
     setFilteredPlaygrounds(filtered);
+    setCurrentPage(1);
   };
 
   const handleLocationChange = (e) => {
-    setFilterCriteria({ ...filterCriteria, location: e.target.value });
+    setFilterCriteria({ ...filterCriteria, city: e.target.value });
   };
 
   const handleRatingChange = (e) => {
@@ -75,74 +75,108 @@ function Cardsground() {
     setFilterCriteria({ ...filterCriteria, size: e.target.value });
   };
 
+  const indexOfLastPlayground = currentPage * playgroundsPerPage;
+  const indexOfFirstPlayground = indexOfLastPlayground - playgroundsPerPage;
+  const currentPlaygrounds = filteredPlaygrounds.slice(indexOfFirstPlayground, indexOfLastPlayground);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
-    <div className="min-h-[50vh] bg-white py-6 flex flex-col justify-center sm:py-2 mb-[-20 ] " id='y'>
-      <div className="py-3 sm:max-w-8xl sm:mx-auto ">
-        <div className="relative inline-flex mb-10">
-          <select
-            value={filterCriteria.location}
-            onChange={handleLocationChange}
-            className="inline-flex items-center justify-center  h-10 gap-8 px-5 text-sm font-medium tracking-wide text-white transition duration-300 rounded focus-visible:outline-none whitespace-nowrap bg-emerald-500 hover:bg-emerald-600 focus:bg-emerald-700 disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-300 disabled:shadow-none"
-          >
-            <option value="">All Locations</option>
-            {location.map((location, index) => (
-              <option key={index} value={location}>{location}</option>
-            ))}
-          </select>
-        </div>
+    <div
+      className="min-h-screen bg-white py-6 flex flex-col justify-center sm:py-2 mb-[-20] mt-32"
+      style={{ background: 'url("https://t4.ftcdn.net/jpg/04/89/79/95/360_F_489799508_r69qrYCqaatNgaYF9vM7owSAz75rDPil.jpg")' }}
+    >     <div className="py-6 flex flex-col justify-center sm:py-2 mb-[-20] mt-32">
+        <div className="py-3 sm:max-w-8xl sm:mx-auto">
+          <div className="relative inline-flex mb-10">
+            <select
+              value={filterCriteria.city}
+              onChange={handleLocationChange}
+              className="inline-flex items-center justify-center h-10 gap-8 px-5 text-sm font-medium tracking-wide text-white transition duration-300 rounded focus-visible:outline-none whitespace-nowrap bg-emerald-500 hover:bg-emerald-600 focus:bg-emerald-700 disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-300 disabled:shadow-none"
+            >
+              <option value="">All city</option>
+              {city.map((city, index) => (
+                <option key={index} value={city}>{city}</option>
+              ))}
+            </select>
+          </div>
 
-        <div className="relative inline-flex mb-4 ml-8" style={{ backgroundColor: 'gray' }}>
-          <select
-            value={filterCriteria.rating}
-            onChange={handleRatingChange}
-            className="inline-flex items-center justify-center h-10 gap-2 px-5 text-sm font-medium tracking-wide text-white transition duration-300 rounded focus-visible:outline-none whitespace-nowrap bg-emerald-500 hover:bg-emerald-600 focus:bg-emerald-700 disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-300 disabled:shadow-none"
-          >
-            <option value="">All Ratings</option>
-            <option value="lowToHigh">Low to High</option>
-            <option value="highToLow">High to Low</option>
-          </select>
-        </div>
+          <div className="relative inline-flex mb-4 ml-8" style={{ backgroundColor: 'gray' }}>
+            <select
+              value={filterCriteria.rating}
+              onChange={handleRatingChange}
+              className="inline-flex items-center justify-center h-10 gap-2 px-5 text-sm font-medium tracking-wide text-white transition duration-300 rounded focus-visible:outline-none whitespace-nowrap bg-emerald-500 hover:bg-emerald-600 focus:bg-emerald-700 disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-300 disabled:shadow-none"
+            >
+              <option value="">All Ratings</option>
+              <option value="lowToHigh">Low to High</option>
+              <option value="highToLow">High to Low</option>
+            </select>
+          </div>
 
-        <div className="relative inline-flex mb-4 ml-8">
-          <select
-            value={filterCriteria.size}
-            onChange={handleFieldSizeChange}
-            className="inline-flex items-center justify-center h-10 gap-2 px-5 text-sm font-medium tracking-wide text-white transition duration-300 rounded focus-visible:outline-none whitespace-nowrap bg-emerald-500 hover:bg-emerald-600 focus:bg-emerald-700 disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-300 disabled:shadow-none"
-          >
-            <option value="">All Sizes</option>
-            {fieldSizes.map((size, index) => (
-              <option key={index} value={size}>{size}</option>
-            ))}
-          </select>
-        </div>
+          <div className="relative inline-flex mb-4 ml-8">
+            <select
+              value={filterCriteria.size}
+              onChange={handleFieldSizeChange}
+              className="inline-flex items-center justify-center h-10 gap-2 px-5 text-sm font-medium tracking-wide text-white transition duration-300 rounded focus-visible:outline-none whitespace-nowrap bg-emerald-500 hover:bg-emerald-600 focus:bg-emerald-700 disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-300 disabled:shadow-none"
+            >
+              <option value="">All Sizes</option>
+              {fieldSizes.map((size, index) => (
+                <option key={index} value={size}>{size}</option>
+              ))}
+            </select>
+          </div>
 
-        <div className="flex flex-wrap justify-center space-x-6">
-          {filteredPlaygrounds.map((playground, index) => (
-            <div key={playground.id} className="mb-6 w-1/4">
-              <div className="bg-white shadow-lg border-gray-100 max-h-80 border sm:rounded-2xl p-8 flex space-x-20">
-                <div className="h-48 overflow-visible w-10/12">
-                <img className="rounded-3xl shadow-lg" src={playground.images_url && playground.images_url.length > 0 ? playground.images_url[0] : 'عنوان_الصورة_الافتراضي'} alt={playground.name} />
-                </div>
-                <div className="flex flex-col w-1/2 space-y-4">
-                  <div className="flex justify-between items-start">
-                    <h2 className="text-3xl font-bold">{playground.name}</h2>
-                    <div className="bg-yellow-400 font-bold rounded-xl p-2">{playground.rating}</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 ml-40 mr-40 mt-16">
+            {currentPlaygrounds.map((playground, index) => (
+              <div key={playground.id} className="mb-6">
+                <div className="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md transition-transform transform hover:scale-105">
+                  <div className="relative mx-4 -mt-6 h-56 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40">
+                    <img
+                      src={playground.images_url && playground.images_url.length > 0 ? playground.images_url[0] : 'عنوان_الصورة_الافتراضي'}
+                      alt={playground.name}
+                      className="object-cover w-full h-full"
+                    />
                   </div>
-                  <div>
-                    <div className="text-sm text-gray-400">Location: {playground.location}</div>
-                    <div className="text-sm text-gray-400">Size of Field: {playground.size}</div>
+                  <div className="p-6">
+                    <h5 className="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+                      {playground.name} - {playground.city}
+                    </h5>
+                    <h5 className="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+                      Size : {playground.size}
+                    </h5>
+                    <p className="block font-sans text-base leading-relaxed text-inherit antialiased font-bold">
+                      Price : {playground.hourly_rate} JOD
+                    </p>
+                    <p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
+                      {playground.description}
+                    </p>
                   </div>
-                  <p className="text-gray-400 max-h-40 overflow-y-hidden">{playground.description}</p>
-                  <div className="flex text-2xl font-bold text-a">{`${playground.hourly_rate} JOD`}</div>
-                  <Link to={`/details/${playground.stadium_id}`}>
-                    <button className="inline-flex items-center justify-center h-10 gap-2 px-5 text-sm font-medium tracking-wide text-white transition duration-300 rounded shadow-md whitespace-nowrap bg-emerald-500 shadow-emerald-200 hover:bg-emerald-600 hover:shadow-sm hover:shadow-emerald-200 focus:bg-emerald-700 focus:shadow-sm focus:shadow-emerald-200 focus-visible:outline-none disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-300 disabled:shadow-none">
-                      <span>More Details</span>
-                    </button>
-                  </Link>
+                  <div className="p-6 pt-0">
+                    <Link to={`/details/${playground.stadium_id}`}>
+                      <button
+                        className="select-none rounded-lg bg-emerald-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-emerald-500/20 transition-all hover:shadow-lg hover:shadow-emerald-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        type="button"
+                        data-ripple-light="true"
+                      >
+                        Details More
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          <div className="flex justify-center mt-4">
+            {[...Array(Math.ceil(filteredPlaygrounds.length / playgroundsPerPage)).keys()].map(number => (
+              <button
+                key={number + 1}
+                onClick={() => paginate(number + 1)}
+                className={`ml-2 py-2 px-4 font-medium text-white bg-emerald-500 rounded transition duration-300 focus:outline-none hover:bg-emerald-600 ${currentPage === number + 1 ? 'bg-emerald-700' : ''}`}
+              >
+                {number + 1}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -150,5 +184,3 @@ function Cardsground() {
 }
 
 export default Cardsground;
-
-
